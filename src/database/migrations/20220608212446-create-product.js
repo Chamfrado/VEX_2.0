@@ -21,7 +21,7 @@ module.exports = {
        type: Sequelize.DOUBLE,
        allowNull:false,
      },
-      drscription_product:{
+      description_product:{
        type: Sequelize.STRING,
        allowNull:false,
      },

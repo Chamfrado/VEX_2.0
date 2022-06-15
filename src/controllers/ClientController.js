@@ -8,9 +8,9 @@ module.exports = {
         return res.json(client);
     },
     async store(req, res){
-        const { name_client, phone_client, sale_id, trader_id  } = req.body;
+        const { name_client, phone_client, trader_id  } = req.body;
 
-        const client = await Client.create({  name_client, phone_client, sale_id, trader_id  });
+        const client = await Client.create({  name_client, phone_client, trader_id  });
 
         return res.json(client);
     },
@@ -25,19 +25,18 @@ module.exports = {
 
     },
     async update(req,res){
-        const {  name_client, phone_client, sale_id, trader_id  } = req.body;
-        const {client} = req.params;
+        const {  name_client, phone_client,  trader_id  } = req.body;
+        const {client_id} = req.params;
 
-        await Client.update({ name_client, phone_client, sale_id, trader_id})
+        await Client.update({ name_client, phone_client,  trader_id},{where: {id: client_id}});
 
-        res.status(200).json({message: 'Atualizado com sucesso!'})
+        res.status(200).json({message: 'Atualizado com sucesso!'});
     }, 
     async getById(req, res){
         const client_id = req.params;
 
-        const client = Client.findByPk({where: {id: client_id}});
+        const client = await Client.findByPk({where: {id: client_id}});
 
         return res.json(client);
     }
 }
-//TESTE

@@ -33,7 +33,7 @@ module.exports = {
         res.status(200).json({message: 'Atualizado com sucesso!'})
     }, 
     async getById(req, res){
-        const trader_id = req.params;
+        const {trader_id} = req.params;
 
         const trader = Trader.findByPk({where: {id: trader_id}});
 

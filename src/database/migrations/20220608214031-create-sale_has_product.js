@@ -19,15 +19,23 @@ module.exports = {
         },
         primaryKey: true,
         allowNull:false.valueOf,
+      },  product_id:{
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'sale',
+          key:'id'
+        },
+        primaryKey: true,
+        allowNull:false.valueOf,
       },
-      quantity_sale_product:{
-       type: Sequelize.DOUBLE,
-       allowNull:false,
-     }, 
      date_sale_product:{
        type: Sequelize.DATE,
        allowNull:false,
      }, 
+     quantity_product:{
+       type: Sequelize.DOUBLE,
+       allowNull:false,
+     },
      created_at:{
       type: Sequelize.DATE,
       allowNull:false,

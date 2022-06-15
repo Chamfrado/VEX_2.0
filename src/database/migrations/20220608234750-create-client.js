@@ -8,21 +8,14 @@ module.exports = {
             primaryKey:true,
             autoIncrement:true,
             allowNull:false,
+         },name_client:{
+          type: Sequelize.STRING,
+          allowNull:false,
          },
           phone_client:{
            type: Sequelize.STRING,
            allowNull:false,
-         }, 
-        sale_id:{
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'sale',
-          key:'id'
-        },
-        primaryKey: true,
-        allowNull:false.valueOf,
-
-      },
+         },
         trader_id:{
         type: Sequelize.INTEGER,
         references:{

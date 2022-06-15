@@ -26,9 +26,9 @@ module.exports = {
     },
     async update(req,res){
         const { date_sale, status_sale, price_sale, trader_id, purchase_in_installments, payment_control, total_sale   } = req.body;
-        const {sale} = req.params;
+        const {sale_id} = req.params;
 
-        await Sale.update({date_sale, status_sale, price_sale, trader_id, purchase_in_installments, payment_control, total_sale })
+        await Sale.update({date_sale, status_sale, price_sale, trader_id, purchase_in_installments, payment_control, total_sale },{where: {id : sale_id}})
 
         res.status(200).json({message: 'Atualizado com sucesso!'})
     }, 

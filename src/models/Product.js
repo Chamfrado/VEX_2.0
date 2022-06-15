@@ -1,5 +1,4 @@
 const {Model, DataTypes} = require ('sequelize');
-
 class product extends Model{
     static init(sequelize){
         super.init({
@@ -7,8 +6,7 @@ class product extends Model{
             price_product: DataTypes.STRING,
             quantity_product: DataTypes.INTEGER,
             description_product: DataTypes.STRING,
-            trader_id: DataTypes.INTEGER,
-            total_product: DataTypes.DOUBLE
+            trader_id: DataTypes.INTEGER
 
         },{
             sequelize

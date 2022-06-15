@@ -26,16 +26,16 @@ module.exports = {
     },
     async update(req,res){
         const {  name_product, price_product, quantity_product, description_product, trader_id  } = req.body;
-        const {product} = req.params;
+        const {product_id} = req.params;
 
-        await Product.update({ name_product, price_product, quantity_product, description_product, trader_id })
+        await Product.update({ name_product, price_product, quantity_product, description_product, trader_id }, {where: {id: product_id}} )
 
         res.status(200).json({message: 'Atualizado com sucesso!'})
     }, 
     async getById(req, res){
-        const product_id = req.params;
+        const {product_id} = req.params;
 
-        const product = Product.findByPk({where: {id: product_id}});
+        const product =  await Product.findByPk({where: {id: product_id}});
 
         return res.json(product);
     }
