@@ -1,4 +1,4 @@
-const Trader = require('../models/Trader')
+const Trader = require('../models/trader')
 
 
 module.exports = {
