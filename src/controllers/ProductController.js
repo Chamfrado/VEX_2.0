@@ -1,42 +1,138 @@
+
+const { validationResult } = require('express-validator');
+const database = require('../database/db');
+
 const Product = require('../models/product')
 
 
-module.exports = {
-    async listAll(req, res){
-        const product = await Product.findAll();
+const initDatabase = (req, res) => {
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS product(id int AUTO_INCREMENT, name_product VARCHAR(50), price_product FLOAT, quantity_product INTEGER,description_product VARCHAR(50) ,trader_id INTEGER,PRIMARY KEY(id))';
 
-        return res.json(product);
-    },
-    async store(req, res){
-        const { name_product, price_product, quantity_product, description_product, trader_id  } = req.body;
+    database.query(sqlQuery, (err) => {
+        if (err) throw err;
 
-        const product = await Product.create({ name_product, price_product, quantity_product, description_product, trader_id });
+        res.send('Table created!')
+    });
+};
 
-        return res.json(product);
-    },
 
-    async delete(req, res){
+//List All Product
+const listAllProducts = (req, res) => {
+    const sqlQuery = 'SELECT * FROM product';
 
-        const { product_id } = req.params ;
+    console.log(`sqlQuery: ${sqlQuery}`);
 
-        await Product.destroy({where: {id: product_id}});
-        
-        res.status(200).json({message: 'excluido com sucesso!'})
+    database.query(sqlQuery, (err, result) => {
+        if (err) throw err;
 
-    },
-    async update(req,res){
-        const {  name_product, price_product, quantity_product, description_product, trader_id  } = req.body;
-        const {product_id} = req.params;
+        res.json({ 'product': result });
+    });
+};
 
-        await Product.update({ name_product, price_product, quantity_product, description_product, trader_id }, {where: {id: product_id}} )
+//Get by Id
+const getProductById = (req, res) => {
+    
+    const errors = validationResult(req);
 
-        res.status(200).json({message: 'Atualizado com sucesso!'})
-    }, 
-    async getById(req, res){
-        const {product_id} = req.params;
-
-        const product =  await Product.findByPk({where: {id: product_id}});
-
-        return res.json(product);
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const Product = {
+            id: req.body.id
+        };
     }
+
+    const sqlQuery = 'SELECT * FROM product WHERE id = ?';
+
+    console.log(`sqlQuery: ${sqlQuery}`);
+
+    database.query(sqlQuery, (err, result) => {
+        if (err) throw err;
+
+        res.json({ 'product': result });
+    });
+};
+
+//Add Product
+const addProduct = (req, res) => {
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const Product = {
+            name_product: req.body.name_product,
+            price_product: req.body.price_product,
+            quantity_product: req.body.quantity_product,
+            description_product: req.body.description_product,
+            trader_id: req.body.trader_id
+
+        };
+
+        const sqlQuery = 'INSERT INTO product SET ?';
+
+        database.query(sqlQuery, Product, (err, row) => {
+            if (err) throw err;
+
+            res.send('Product add successfully!');
+        });
+    }
+};
+
+//Delete Product
+const deleteProduct = (req, res) => {
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const product = {
+            id: req.body.id
+        };
+
+        const sqlQuery = 'DELETE FROM product WHERE id = ?';
+
+        database.query(sqlQuery, Product, (err, row) => {
+            if (err) throw err;
+
+            res.send('Product deleted successfully!');
+        });
+    }
+};
+
+
+//Update Product
+const updateProduct = (req, res) => {
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const Product = {
+            
+            name_product: req.body.name_product,
+            price_product: req.body.price_product,
+            quantity_product: req.body.quantity_product,
+            description_product: req.body.description_product,
+            id: req.body.id
+        };
+
+        const sqlQuery = 'UPDATE product SET name_Product = ?, price_product = ?, quantity_product = ?, description_product = ? WHERE id = ?';
+
+        database.query(sqlQuery, Product, (err, row) => {
+            if (err) throw err;
+
+            res.send('Product updated successfully!');
+        });
+    }
+};
+
+module.exports = {
+    initDatabase,
+    listAllProducts: listAllProducts,
+    getProductById: getProductById,
+    addProduct,
+    deleteProduct,
+    updateProduct
 }
+

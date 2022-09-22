@@ -1,42 +1,140 @@
+
+
+
+const { validationResult } = require('express-validator');
+const database = require('../database/db');
+
 const Client = require('../models/client')
 
 
-module.exports = {
-    async listAll(req, res){
-        const client = await Client.findAll();
+const initDatabase = (req, res) => {
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS client(id int AUTO_INCREMENT, name_client VARCHAR(50), phone_client VARCHAR(50), phone_client VARCHAR(50),trader_id INTEGER ,PRIMARY KEY(id))';
 
-        return res.json(client);
-    },
-    async store(req, res){
-        const { name_client, phone_client, trader_id  } = req.body;
+    database.query(sqlQuery, (err) => {
+        if (err) throw err;
 
-        const client = await Client.create({  name_client, phone_client, trader_id  });
+        res.send('Table created!')
+    });
+};
 
-        return res.json(client);
-    },
 
-    async delete(req, res){
+//List All Client
+const listAllClients = (req, res) => {
+    const sqlQuery = 'SELECT * FROM client';
 
-        const { client_id } = req.params ;
+    console.log(`sqlQuery: ${sqlQuery}`);
 
-        await Client.destroy({where: {id: client_id}});
-        
-        res.status(200).json({message: 'excluido com sucesso!'})
+    database.query(sqlQuery, (err, result) => {
+        if (err) throw err;
 
-    },
-    async update(req,res){
-        const {  name_client, phone_client,  trader_id  } = req.body;
-        const {client_id} = req.params;
+        res.json({ 'clients': result });
+    });
+};
 
-        await Client.update({ name_client, phone_client,  trader_id},{where: {id: client_id}});
+//Get by Id
+const getClientById = (req, res) => {
+    
+    const errors = validationResult(req);
 
-        res.status(200).json({message: 'Atualizado com sucesso!'});
-    }, 
-    async getById(req, res){
-        const client_id = req.params;
-
-        const client = await Client.findByPk({where: {id: client_id}});
-
-        return res.json(client);
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const client = {
+            id: req.body.id
+        };
     }
+
+    const sqlQuery = 'SELECT * FROM client WHERE id = ?';
+
+    console.log(`sqlQuery: ${sqlQuery}`);
+
+    database.query(sqlQuery, (err, result) => {
+        if (err) throw err;
+
+        res.json({ 'client': result });
+    });
+};
+//Add Client
+const addClient = (req, res) => {
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const client = {
+            name_client: req.body.name_client,
+            phone_client: req.body.phone_client,
+            trader_id: req.body.trader_id
+        };
+
+        const sqlQuery = 'INSERT INTO client SET ?';
+
+        database.query(sqlQuery, client, (err, row) => {
+            if (err) throw err;
+
+            res.send('Client add successfully!');
+        });
+    }
+};
+
+//Delete Client
+const deleteClient = (req, res) => {
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const client = {
+            id: req.body.id
+        };
+
+        const sqlQuery = 'DELETE FROM client WHERE id = ?';
+
+        database.query(sqlQuery, client, (err, row) => {
+            if (err) throw err;
+
+            res.send('Client deleted successfully!');
+        });
+    }
+};
+
+
+//Update Client
+const updateClient = (req, res) => {
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const client = {
+            
+            name_client: req.body.name_client,
+            phone_client: req.body.phone_client,
+            id: req.body.id
+        };
+
+        const sqlQuery = 'UPDATE client SET name_client = ?, phone_client = ? WHERE id = ?';
+
+        database.query(sqlQuery, client, (err, row) => {
+            if (err) throw err;
+
+            res.send('Client updated successfully!');
+        });
+    }
+};
+
+module.exports = {
+    initDatabase,
+    listAllClients: listAllClients,
+    getClientById: getClientById,
+    addClient,
+    deleteClient,
+    updateClient
 }
+
+
+
+
+
+
+

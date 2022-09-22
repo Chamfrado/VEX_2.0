@@ -23,57 +23,128 @@ routes.post('/subscribe',
 );
 // end of sample routes ------------------------------
 
+//Client Routes------------------------------------------------------------------------------
+routes.get('/client/init', clientController.initDatabase);
 
+routes.get('/client/list', clientController.listAllClients);
 
-//Routes for the table "trader"
-routes.post('/trader', traderController.store);
+routes.get('/client/getById',body('id').not().escape() ,clientController.getClientById);
 
-routes.get('/trader', traderController.listAll);
+routes.post('/client/add',
+    body('name_client').not().isEmpty().escape(),
+    body('phone_client').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    clientController.addClient
+    );
 
-routes.get('/trader/:trader_id', traderController.getById);
+routes.put('/client/update',
+    body('name_client').not().isEmpty().escape(),
+    body('phone_client').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    body('id').not().isEmpty().escape(),
+    clientController.updateClient);
 
-routes.delete('/trader/:trader_id', traderController.delete);
-
-routes.put('/trader/:trader_id', traderController.update);
-
-
-
-//Routes for the table "Product"
-routes.post('/product', productController.store);
-
-routes.get('/product', productController.listAll);
-
-routes.get('/product/:product_id', productController.getById);
-
-routes.delete('/product/:product_id', productController.delete);
-
-routes.put('/product/:product_id', productController.update);
-
-
-
-//Routes for the table "Sale"
-routes.post('/sale', saleController.store);
-
-routes.get('/sale', saleController.listAll);
-
-routes.get('/sale/:sale_id', saleController.getById);
-
-routes.delete('/sale/:sale_id', saleController.delete);
-
-routes.put('/sale/:sale_id', saleController.update);
+routes.delete('/client/delete',
+    body('id').not().isEmpty().escape(),
+    clientController.deleteClient);
 
 
 
-//Routes for the table "Client"
+//Product Routes ------------------------------------------------------------------------------
+routes.get('/product/init', productController.initDatabase);
 
-routes.post('/client', clientController.store);
+routes.get('/product/list', productController.listAllProducts);
 
-routes.get('/client', clientController.listAll);
+routes.get('/product/getById',body('id').not().escape() ,productController.getProductById);
 
-routes.get('/client/:client_id', clientController.getById);
+routes.post('/product/add',
+    body('name_product').not().isEmpty().escape(),
+    body('price_product').not().isEmpty().escape(),
+    body('quantity_product').not().isEmpty().escape(),
+    body('description_product').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    productController.addProduct
+    );
 
-routes.delete('/client/:client_id', clientController.delete);
+routes.put('/product/update',
+    body('name_product').not().isEmpty().escape(),
+    body('price_product').not().isEmpty().escape(),
+    body('quantity_product').not().isEmpty().escape(),
+    body('description_product').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    body('id').not().isEmpty().escape(),
+    productController.updateProduct);
 
-routes.put('/client/:client_id', clientController.update);
+routes.delete('/product/delete',
+    body('id').not().isEmpty().escape(),
+    productController.deleteProduct);
+
+
+
+//Sale Controller------------------------------------------------------------------------------
+routes.get('/sale/init', saleController.initDatabase);
+
+routes.get('/sale/list', saleController.listAllSales);
+
+routes.get('/sale/getById',body('id').not().escape() ,saleController.getSaleById);
+
+routes.post('/sale/add',
+    body('date_sale').not().isEmpty().escape(),
+    body('status_sale').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    body('client_id').not().isEmpty().escape(),
+    body('purchase_in_installments').not().isEmpty().escape(),
+    body('payment_control').not().isEmpty().escape(),
+    body('total_sale').not().isEmpty().escape(),
+    saleController.addSale
+    );
+
+routes.put('/sale/update',
+    body('date_sale').not().isEmpty().escape(),
+    body('status_sale').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    body('client_id').not().isEmpty().escape(),
+    body('purchase_in_installments').not().isEmpty().escape(),
+    body('payment_control').not().isEmpty().escape(),
+    body('total_sale').not().isEmpty().escape(),
+    body('id').not().isEmpty().escape(),
+    saleController.updateSale);
+
+routes.delete('/sale/delete',
+    body('id').not().isEmpty().escape(),
+    saleController.deleteSale);
+
+//Trader Controller ------------------------------------------------------------------------------
+routes.get('/trader/init', traderController.initDatabase);
+
+routes.get('/trader/list', traderController.listAllTraders);
+
+routes.get('/trader/getById',body('id').not().escape() ,traderController.getTraderById);
+
+routes.post('/trader/add',
+    body('date_trader').not().isEmpty().escape(),
+    body('status_trader').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    body('client_id').not().isEmpty().escape(),
+    body('purchase_in_installments').not().isEmpty().escape(),
+    body('payment_control').not().isEmpty().escape(),
+    body('total_trader').not().isEmpty().escape(),
+    traderController.addTrader
+    );
+
+routes.put('/trader/update',
+    body('date_trader').not().isEmpty().escape(),
+    body('status_trader').not().isEmpty().escape(),
+    body('trader_id').not().isEmpty().escape(),
+    body('client_id').not().isEmpty().escape(),
+    body('purchase_in_installments').not().isEmpty().escape(),
+    body('payment_control').not().isEmpty().escape(),
+    body('total_trader').not().isEmpty().escape(),
+    body('id').not().isEmpty().escape(),
+    traderController.updateTrader);
+
+routes.delete('/trader/delete',
+    body('id').not().isEmpty().escape(),
+    traderController.deleteTrader);
 
 module.exports = routes;
