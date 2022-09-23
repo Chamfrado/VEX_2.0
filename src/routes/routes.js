@@ -7,7 +7,7 @@ const traderController = require('../controllers/traderController');
 const productController = require('../controllers/productController');
 const saleController = require('../controllers/saleController');
 const clientController = require('../controllers/clientController');
-
+const productHasSaleController= require('../controllers/productHasSaleController');
 // sample routes ------------------------------------
 routes.get('/init', sampleController.initDatabase);
 
@@ -122,29 +122,34 @@ routes.get('/trader/list', traderController.listAllTraders);
 routes.get('/trader/getById',body('id').not().escape() ,traderController.getTraderById);
 
 routes.post('/trader/add',
-    body('date_trader').not().isEmpty().escape(),
-    body('status_trader').not().isEmpty().escape(),
-    body('trader_id').not().isEmpty().escape(),
-    body('client_id').not().isEmpty().escape(),
-    body('purchase_in_installments').not().isEmpty().escape(),
-    body('payment_control').not().isEmpty().escape(),
-    body('total_trader').not().isEmpty().escape(),
+    body('name_trader').not().isEmpty().escape(),
+    body('phone_trader').not().isEmpty().escape(),
+    body('email_trader').not().isEmpty().escape(),
+    body('pass_trader').not().isEmpty().escape(),
+    body('date_acess').not().isEmpty().escape(),
+    body('date_term').not().isEmpty().escape(),
     traderController.addTrader
     );
 
 routes.put('/trader/update',
-    body('date_trader').not().isEmpty().escape(),
-    body('status_trader').not().isEmpty().escape(),
-    body('trader_id').not().isEmpty().escape(),
-    body('client_id').not().isEmpty().escape(),
-    body('purchase_in_installments').not().isEmpty().escape(),
-    body('payment_control').not().isEmpty().escape(),
-    body('total_trader').not().isEmpty().escape(),
+    body('name_trader').not().isEmpty().escape(),
+    body('phone_trader').not().isEmpty().escape(),
+    body('email_trader').isEmail().normalizeEmail(),
+    body('pass_trader').not().isEmpty().escape(),
+    body('date_acess').not().isEmpty().escape(),
+    body('date_term').not().isEmpty().escape(),
     body('id').not().isEmpty().escape(),
     traderController.updateTrader);
 
 routes.delete('/trader/delete',
     body('id').not().isEmpty().escape(),
     traderController.deleteTrader);
+
+//Products of a Sale
+routes.get('/sale/products/all',productHasSaleController.listAllProductHasSales );
+
+routes.get('/sale/products/init', productHasSaleController.initDatabase);
+
+routes.post('/sale/products/add', productHasSaleController.addProductHasSale);
 
 module.exports = routes;

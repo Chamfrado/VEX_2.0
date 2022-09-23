@@ -92,7 +92,7 @@ const deleteProduct = (req, res) => {
 
         const sqlQuery = 'DELETE FROM product WHERE id = ?';
 
-        database.query(sqlQuery, Product, (err, row) => {
+        database.query(sqlQuery, req.body.id, (err, row) => {
             if (err) throw err;
 
             res.send('Product deleted successfully!');
@@ -114,10 +114,10 @@ const updateProduct = (req, res) => {
             price_product: req.body.price_product,
             quantity_product: req.body.quantity_product,
             description_product: req.body.description_product,
-            id: req.body.id
+            trader_id: req.body.trader_id
         };
 
-        const sqlQuery = 'UPDATE product SET name_Product = ?, price_product = ?, quantity_product = ?, description_product = ? WHERE id = ?';
+        const sqlQuery = 'UPDATE product SET  ? WHERE id = '+req.body.id;
 
         database.query(sqlQuery, Product, (err, row) => {
             if (err) throw err;

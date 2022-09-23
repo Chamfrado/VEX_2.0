@@ -5,7 +5,7 @@ const Sale = require('../models/sale')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, status_sale, trader_id INTEGER,client_id INTEGER, purchase_in_installments VARCHAR[50],payment_control VARCHAR[50],total_sale FLOAT ,PRIMARY KEY(id))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, date_sale DATE, status_sale VARCHAR(50), trader_id INTEGER, client_id INTEGER, purchase_in_installments VARCHAR(50), payment_control VARCHAR(50), total_sale FLOAT ,PRIMARY KEY(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -93,7 +93,7 @@ const deleteSale = (req, res) => {
 
         const sqlQuery = 'DELETE FROM sale WHERE id = ?';
 
-        database.query(sqlQuery, Sale, (err, row) => {
+        database.query(sqlQuery, req.body.id, (err, row) => {
             if (err) throw err;
 
             res.send('Sale deleted successfully!');
@@ -115,11 +115,10 @@ const updateSale = (req, res) => {
             status_sale: req.body.status_sale,
             purchase_in_installments: req.body.purchase_in_installments,
             payment_control: req.body.payment_control,
-            total_sale: req.body.total_sale,
-            id: req.body.id
+            total_sale: req.body.total_sale
         };
 
-        const sqlQuery = 'UPDATE sale SET date_sale = ?, status_sale = ?, purchase_in_installments = ?, payment_control = ?, total_sale = ? WHERE id = ?';
+        const sqlQuery = 'UPDATE sale SET ? WHERE id = '+ req.body.id;
 
         database.query(sqlQuery, Sale, (err, row) => {
             if (err) throw err;
@@ -128,6 +127,9 @@ const updateSale = (req, res) => {
         });
     }
 };
+
+
+
 
 module.exports = {
     initDatabase,

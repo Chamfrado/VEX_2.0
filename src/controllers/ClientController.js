@@ -8,7 +8,7 @@ const Client = require('../models/client')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS client(id int AUTO_INCREMENT, name_client VARCHAR(50), phone_client VARCHAR(50), phone_client VARCHAR(50),trader_id INTEGER ,PRIMARY KEY(id))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS client(id int AUTO_INCREMENT, name_client VARCHAR(50), phone_client VARCHAR(50),trader_id INTEGER ,PRIMARY KEY(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
