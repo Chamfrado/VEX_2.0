@@ -17,7 +17,7 @@ const initDatabase = (req, res) => {
 
 //List All Sale
 const listAllSales = (req, res) => {
-    const sqlQuery = 'SELECT * FROM sale';
+    const sqlQuery = 'select sale.*,product.name_product, product_has_sale.quantity_sale_product, product_has_sale.price_product_sale  from db_vex.sale LEFT JOIN db_vex.product_has_sale  ON sale.id = product_has_sale.sale_id LEFT JOIN db_vex.product ON product_has_sale.product_id = product.id ORDER BY sale.id DESC';
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
@@ -139,3 +139,4 @@ module.exports = {
     deleteSale,
     updateSale
 }
+
