@@ -1,32 +1,26 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Button, TextInput , Image, Text, View , Alert} from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from './src/pages/login';
+import HomeScreen from './src/pages/mainMenu';
+import ClientScreen from './src/pages/client'
+
 
 export default function App() {
-  const [username, setUsername, password, setPassword] = useState('');
-  return (
-    <View style={styles.container}>
-      <Image  resizeMode="contain" style={styles.logo} source={require("./assets/drigon.png")} /> 
-      <Text></Text>
-      <Text>Email</Text>
-      <TextInput
-        style={styles.textinput}
-        textContentType='emailAddress' 
-        placeholder='Username'
-        onChangeText={newUsername => setUsername(newUsername)}
-        defaultValue={username}/>
-      <Text></Text>
-      <Text>Password</Text>
-      <TextInput style={styles.textinput} textContentType='password'  placeholder='Password'/>
-      <Button
-        title="Logar!"
-        onPress={() => Alert.alert('Evento Logar as ' + username )}
-      />
-      <Text>VEX</Text>
-      <StatusBar style="auto" />
-    </View>
+  const Stack = createNativeStackNavigator();
+  return(
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName='Login'>
+            <Stack.Screen name='Login' component={LoginScreen} />
+            <Stack.Screen name='Home' component={HomeScreen} options={{ title: 'Menu Principal'}}/>
+            <Stack.Screen name='Client' component={ClientScreen} options={{ title: 'Clientes'}}/>
+
+        </Stack.Navigator>
+      </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -34,17 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  logo:{
-    width: 150,
-    height: 50,
-    padding: 5,
-    alignSelf: "center",
-  },
-  textinput:{
-    idth: 200,
-    height: 50,
-    backgroundColor: '#fff'
   }
 });
+
 //<Image resizeMode="contain" style={styles.logo} source={require("./assets/drigon.png")} /> 
