@@ -8,38 +8,32 @@ import { Header } from '../components/header'
 
 const DATA = [
   {
+    id: 'bd7acbea-c1b1-46cs2s2-aed5-3ad53abb28ba',
+    title: '1 Item',
+  },{
+    id: 'bd7acbea-c1b1-46c14ss2-aed5-3ad53abb28ba',
+    title: '2 Item',
+  },{
+    id: 'bd7acbea-c1b1-46cs54s2-aed5-3ad53abb28ba',
+    title: '3 Item',
+  },{
+    id: 'bd7acbea-c1b1-46c233ss2-aed5-3ad53abb28ba',
+    title: '4 Item',
+  },{
+    id: 'bd7acbea-c1b1-46cs653s2-aed5-3ad53abb28ba',
+    title: '5 Item',
+  },{
+    id: 'bd7acbea-c1b1-46c3124ss2-aed5-3ad53abb28ba',
+    title: '6 Item',
+  },{
+    id: 'bd7acbea-c1b1-46cs4frs2-aed5-3ad53abb28ba',
+    title: '7 Item',
+  },{
+    id: 'bd7acbea-c1b1-46csdsas2-aed5-3ad53abb28ba',
+    title: '8 Item',
+  },{
     id: 'bd7acbea-c1b1-46css2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48dr3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-47t1f-bd96-145571e29d72',
-    title: 'Third Item',
-  },{
-    id: 'bd7acbea-c1b1-46c2y-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48td3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-47r1f-bd96-145571e29d72',
-    title: 'Third Item',
-  },{
-    id: 'bd7acbea-c1b1-46dc2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-4s8d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-4a71f-bd96-145571e29d72',
-    title: 'Third Item',
+    title: '9 Item',
   },
 ];
 
@@ -50,7 +44,7 @@ const Item = ({ title }) => (
 );
 
 
-function Client ({navigation}){
+function Sale ({navigation}){
 
   const renderItem = ({ item }) => (
     <Item title={item.title} />
@@ -58,14 +52,40 @@ function Client ({navigation}){
     const [modalVisible, setModalVisible] = useState(false);
     return (
       <View style={styles.container}>
-        <Text>Lista de Cliente</Text>
-        <FlatList
-        style={styles.list}
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
+        <Text>Realizar Uma Venda</Text>
+        <View>
+            <Button
+            title='Selecionar Produto'
+            onPress={() => {Alert.alert('Query list produto')}}
+            />
+            <Text>Camiseta Azul</Text>
+            <Text>Valor:</Text>
+            <TextInput placeholder='R$XX,XX'/>
+            <Button
+            title='Adicionar'
+            onPress={() => {Alert.alert('Query Add product_has_sale')}}
+            />
+        </View>
+        <View style={styles.viewFlatList}>
+            <FlatList
+            style={styles.list}
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
         />
-
+        </View>
+        
+        <View>
+        <Button
+          title='Selecionar Cliente'
+          onPress={() => {Alert.alert('Query list produto')}}
+        />
+        <Text>Willian Manaus</Text>
+        <Button
+          title='Realizar Venda'
+          onPress={() => {Alert.alert('Query list addSale')}}
+        />
+        </View>
         <Modal 
         animationType=' slide '
         transparent={true}
@@ -80,7 +100,7 @@ function Client ({navigation}){
               <Text>Cadastrar Usuario</Text>
               <View style={styles.clietName}>
                 <Text>Nome:</Text>
-                <TextInput style={styles.textinput}   placeholder='Nome do Cliente'/>
+                <TextInput style={styles.textinput}   placeholder='Nome do Salee'/>
               </View>
               <View style={styles.clietName}>
                 <Text>Telefone:</Text>
@@ -117,6 +137,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+    },viewFlatList:{
+        width: 200,
+        height:100,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     logo:{
       width: 150,
@@ -175,4 +200,4 @@ const styles = StyleSheet.create({
     }
   });
 
-export default Client;
+export default Sale;

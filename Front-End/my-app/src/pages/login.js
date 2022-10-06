@@ -14,19 +14,23 @@ function Login ({navigation}){
       <View style={styles.container}>
         <Image  resizeMode="contain" style={styles.logo} source={require("../../assets/drigon.png")} /> 
         <Text></Text>
-        <Text>Email</Text>
+        <Text style={styles.credentials}>Telefone</Text>
         <TextInput
-          style={styles.textinput}
-          textContentType='emailAddress' 
-          placeholder='Username'
+          style={styles.textinput} 
+          placeholder='(35) 9 9999-9999'
           onChangeText={newUsername => setUsername(newUsername)}
           defaultValue={username}/>
         <Text></Text>
-        <Text>Password</Text>
-        <TextInput style={styles.textinput} textContentType='password'  placeholder='Password'/>
+        <Text style={styles.credentials}>Password</Text>
+        <TextInput style={styles.textinput} secureTextEntry={true} textContentType='password'  placeholder='Password'/>
+        <Text style={styles.forgot}>Esqueceu a senha?</Text>
         <Button
           title="Entrar!"
           onPress={() => navigation.navigate('Home')}
+        />
+        <Button
+          title="TESTE!"
+          onPress={() => navigation.navigate('Teste')}
         />
         <Text>VEX</Text>
         <StatusBar style="auto" />
@@ -37,9 +41,9 @@ function Login ({navigation}){
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#87CEFA',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
     },
     logo:{
       width: 150,
@@ -47,10 +51,21 @@ const styles = StyleSheet.create({
       padding: 5,
       alignSelf: "center",
     },
+    credentials:{
+      fontSize: 20
+    },forgot:{
+      fontStyle: 'italic',
+      
+    },
     textinput:{
-      idth: 200,
-      height: 50,
-      backgroundColor: '#fff'
+      
+      borderWidth: 2,
+      alignSelf:'stretch',
+      backgroundColor: '#fff',
+      marginLeft: 40,
+      marginRight:40,
+      marginTop: -38,
+      textAlign: 'center'
     }
   });
 

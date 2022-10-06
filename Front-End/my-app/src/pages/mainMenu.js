@@ -5,55 +5,110 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Button, TextInput , Image, Text, View , Alert} from 'react-native';
 import { Header } from '../components/header'
+
 // import { Container } from './styles';
 
 function Home ({navigation}){
     return (
-        <View style={styles.container}>
+      <View style={styles.container}>
         
-        <Text>MENU PRINCIPAL</Text>
-    
-        <Button
-        title="Clientes"
-        onPress={() => navigation.navigate('Client')}/>
-    
-        <Button
-        title='Produtos'
-        onPress={() => Alert.alert('evento Produtos')}/>
-    
-        <Button
-        title='Vendas'
-        onPress={() => Alert.alert('evento Vendas')}/>
-    
-        <Button
-        title='Historico'
-        onPress={() => Alert.alert('evento Historico')}/>
-    
-        <Button
-        title='Usuario'
-        onPress={() => Alert.alert('evento Historico')}/>
+          
+
+          <View style={styles.containerTitle}>
+          <Text style={styles.titleText}>MENU PRINCIPAL</Text>
+          </View>
+
+           <View style={styles.containerBtn}>
+            <Button
+              style={styles.btn}
+              title="Clientes"
+               onPress={() => navigation.navigate('Client')}/>
+           
+           
+           
+           </View>
+        
+          <View style={styles.containerBtn}>
+          <Button
+            style={styles.btn}
+           title='Produtos'
+            onPress={() => navigation.navigate('Product')}/>
+          </View>
+
+          <View style={styles.containerBtn}>
+            
+            <Button
+            style={styles.btn}
+           title='Vendas'
+           onPress={() => navigation.navigate('Sale')}/>
+          </View>
+
+          <View style={styles.containerBtn}>
+
+            <Button
+            style={styles.btn}
+            title='Historico'
+            onPress={() => navigation.navigate('Historic')}/>
+            
+          </View>
+
+          <View style={styles.containerBtn}>
+           <Button
+           style={styles.btn}
+           title='Usuario'
+           onPress={() => navigation.navigate('User')}/>
+          </View>
+          <View style={styles.containerBottom}>
+            <Text>VEX</Text>
+          </View>
         </View>
+        
+        
+        
     );
 }
 
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
+      backgroundColor: '#87CEFA'
+
+
+      
     },
-    logo:{
-      width: 150,
-      height: 50,
-      padding: 5,
-      alignSelf: "center",
+    title:{
+      flex: 1,
+      paddingTop: 50,
+            
     },
-    textinput:{
-      idth: 200,
-      height: 50,
-      backgroundColor: '#fff'
+    titleText:{
+      fontSize: 30
+    },
+    containerBtn:{
+     alignSelf:'stretch',
+     marginLeft: 100,
+     marginRight: 100,
+     
+     
+
+    },
+    btn:{
+      flex: 1,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderWidth:4
+      
+      
+    },
+    containerBottom:{
+      alignSelf:'center',
+      
     }
+    
   });
 
 export default Home;

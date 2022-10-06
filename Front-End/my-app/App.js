@@ -5,8 +5,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import LoginScreen from './src/pages/login';
 import HomeScreen from './src/pages/mainMenu';
-import ClientScreen from './src/pages/client'
-
+import ClientScreen from './src/pages/client';
+import ProductScreen from './src/pages/product';
+import HistoricScreen from './src/pages/historic';
+import UserScreen from './src/pages/user';
+import SaleScreen from './src/pages/sale';
+import TesteScreen from './src/pages/teste';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -16,7 +20,12 @@ export default function App() {
             <Stack.Screen name='Login' component={LoginScreen} />
             <Stack.Screen name='Home' component={HomeScreen} options={{ title: 'Menu Principal'}}/>
             <Stack.Screen name='Client' component={ClientScreen} options={{ title: 'Clientes'}}/>
-
+            <Stack.Screen name='Product' component={ProductScreen} options={{ title: 'Produto'}}/>
+            <Stack.Screen name='Historic' component={HistoricScreen} options={{ title: 'Histórico'}}/>
+            <Stack.Screen name='User' component={UserScreen} options={{ title: 'Usuario'}}/>
+            <Stack.Screen name='Sale' component={SaleScreen} options={{ title: 'Vendas'}}/>
+            <Stack.Screen name='Teste' component={TesteScreen} options={{ title: 'Teste'}}/>
+            
         </Stack.Navigator>
       </NavigationContainer>
   );
