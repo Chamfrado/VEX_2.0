@@ -5,7 +5,7 @@ const Trader = require('../models/trader')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS trader(id int AUTO_INCREMENT, name_trader VARCHAR(50), phone_trader VARCHAR(50), email_trader VARCHAR(50),pass_trader VARCHAR(50), date_acess DATE, date_term DATE,PRIMARY KEY(id))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS trader(id int AUTO_INCREMENT, name_trader VARCHAR(50), phone_trader VARCHAR(50), email_trader VARCHAR(50),pass_trader VARCHAR(50), date_acess DATE, date_term DATE,PRIMARY KEY(id),UNIQUE KEY (phone_trader))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -126,11 +126,40 @@ const updateTrader = (req, res) => {
     }
 };
 
+
+
+//Get by Id
+const autenticTrader = (req, res) => {
+    
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    } else {
+        const Trader = {
+            phone_trader: req.body.phone_trader,
+            pass_trader: req.body.pass_trader
+        };
+    }
+
+    const sqlQuery = 'SELECT * FROM trader where phone_trader = '+ req.body.phone_trader + ' AND pass_trader = "'+ req.body.pass_trader+ '"';
+
+    console.log(`sqlQuery: ${sqlQuery}`);
+
+    database.query(sqlQuery,req.body.id,  (err, result) => {
+        if (err) throw err;
+
+        res.json({ 'trader': result });
+    });
+};
+
+
 module.exports = {
     initDatabase,
     listAllTraders: listAllTraders,
     getTraderById: getTraderById,
     addTrader,
     deleteTrader,
-    updateTrader
+    updateTrader,
+    autenticTrader
 }

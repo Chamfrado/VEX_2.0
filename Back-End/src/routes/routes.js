@@ -145,6 +145,11 @@ routes.delete('/trader/delete',
     body('id').not().isEmpty().escape(),
     traderController.deleteTrader);
 
+routes.get('/trader/autentic',
+body('phone_trader').not().isEmpty().escape(),
+body('pass_trader').not().isEmpty().escape(),
+traderController.autenticTrader);
+
 //Products of a Sale
 routes.get('/sale/products/all',productHasSaleController.listAllProductHasSales );
 

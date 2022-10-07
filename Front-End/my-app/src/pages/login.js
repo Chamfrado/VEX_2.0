@@ -12,7 +12,9 @@ function Login ({navigation}){
     const [username, setUsername, password, setPassword] = useState('');
     return (
       <View style={styles.container}>
-        <Image  resizeMode="contain" style={styles.logo} source={require("../../assets/drigon.png")} /> 
+        <View style={styles.viewLogo}>
+        <Image  resizeMode="contain" style={styles.logo} source={require("../../assets/logoVEX.png")} /> 
+        </View>
         <Text></Text>
         <Text style={styles.credentials}>Telefone</Text>
         <TextInput
@@ -46,10 +48,9 @@ const styles = StyleSheet.create({
       justifyContent: 'space-evenly',
     },
     logo:{
-      width: 150,
-      height: 50,
-      padding: 5,
-      alignSelf: "center",
+      height:200,
+      padding: 1,
+      
     },
     credentials:{
       fontSize: 20
@@ -64,8 +65,10 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       marginLeft: 40,
       marginRight:40,
-      marginTop: -38,
+      marginTop: -10,
       textAlign: 'center'
+    },viewLogo:{
+      
     }
   });
 
