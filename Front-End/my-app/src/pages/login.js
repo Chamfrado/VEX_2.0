@@ -11,18 +11,27 @@ import api from '../../services/api';
 // import { Container } from './styles';
 
 function Login ({navigation}){
-    const [username, setUsername, password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
 function autentication(){
         const jsonBody = JSON.stringify({
           
             phone_trader: username,
-            pass_trader: password
-          
+            pass_trader: password  
         })
-        api.get('trader/autentic',jsonBody).then( resp => {
-         console.log(data);
-        })
+        api.post('trader/autentic',{phone_trader: username, pass_trader: password  }).then( ({data}) => {
+            console.log(data);
+            if(data === 'recusado'){
+              Alert.alert('Telefone ou senha errado');
+            }else{
+              Alert.alert('Logado com Sucesso!');
+              navigation.navigate('Home');
+            }
+
+         })
+         
+        
         
 
   }
@@ -39,10 +48,16 @@ function autentication(){
           style={styles.textinput} 
           placeholder='(35) 9 9999-9999'
           onChangeText={newUsername => setUsername(newUsername)}
-          defaultValue={username}/>
+          defaultValue={username}
+          dataDetectorTypes='phoneNumber'/>
         <Text></Text>
         <Text style={styles.credentials}>Password</Text>
-        <TextInput style={styles.textinput} secureTextEntry={true} textContentType='password'  placeholder='Password'/>
+        <TextInput 
+        style={styles.textinput} 
+        secureTextEntry={true} 
+        textContentType='password'  
+        placeholder='Password'
+        onChangeText={newPassword => setPassword(newPassword)}/>
         <Text style={styles.forgot}>Esqueceu a senha?</Text>
         <Button
           title="Entrar!"

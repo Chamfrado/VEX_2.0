@@ -128,8 +128,8 @@ const updateTrader = (req, res) => {
 
 
 
-//Get by Id
-const autenticTrader = (req, res) => {
+//AUTENTICATE
+ const autenticTrader  = (req, res) => {
     
     const errors = validationResult(req);
 
@@ -143,16 +143,30 @@ const autenticTrader = (req, res) => {
     }
 
     const sqlQuery = 'SELECT * FROM trader where phone_trader = '+ req.body.phone_trader + ' AND pass_trader = "'+ req.body.pass_trader+ '"';
+    const sqlQuery2 = 'SELECT COUNT(*) as count FROM trader where phone_trader = '+ req.body.phone_trader + ' AND pass_trader = "'+ req.body.pass_trader+ '"';
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
-    database.query(sqlQuery,req.body.id,  (err, result) => {
-        if (err) throw err;
+    
+    database.query(sqlQuery2,(error, result2) =>{
 
-        res.json({ 'trader': result });
-    });
-};
-
+        console.log(result2[0]);
+        chave = result2[0].count ;
+        console.log(result2);
+        console.log('ASALAMALEIKO '+chave)
+        if(chave > 0){
+            database.query(sqlQuery,  (err, result) => {
+            if (err) throw err;
+                 res.json({ 'trader': result });
+             });
+                
+                
+        }else{
+            res.send('recusado');
+        }
+        
+    })
+ }
 
 module.exports = {
     initDatabase,
