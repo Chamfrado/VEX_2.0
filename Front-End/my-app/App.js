@@ -12,6 +12,7 @@ import UserScreen from './src/pages/user';
 import SaleScreen from './src/pages/sale';
 import TesteScreen from './src/pages/teste';
 
+
 export default function App() {
   const Stack = createNativeStackNavigator();
   return(

@@ -4,12 +4,30 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Button, TextInput , Image, Text, View , Alert} from 'react-native';
-import { Header } from '../components/header'
+import { Header } from '../components/header';
+import api from '../../services/api';
+
 
 // import { Container } from './styles';
 
 function Login ({navigation}){
     const [username, setUsername, password, setPassword] = useState('');
+
+function autentication(){
+        const jsonBody = JSON.stringify({
+          
+            phone_trader: username,
+            pass_trader: password
+          
+        })
+        api.get('trader/autentic',jsonBody).then( resp => {
+         console.log(data);
+        })
+        
+
+  }
+
+
     return (
       <View style={styles.container}>
         <View style={styles.viewLogo}>
@@ -28,7 +46,7 @@ function Login ({navigation}){
         <Text style={styles.forgot}>Esqueceu a senha?</Text>
         <Button
           title="Entrar!"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => autentication()}
         />
         <Button
           title="TESTE!"

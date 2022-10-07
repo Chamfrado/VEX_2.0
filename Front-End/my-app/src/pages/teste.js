@@ -1,50 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet,SafeAreaView ,ScrollView, FlatList ,VirtualizedList,Button, Text, View , SectionList, Pressable, Modal, Alert, TextInput} from 'react-native';
 import { Header } from '../components/header'
+import api from '../../services/api';
 
-
-
+const data = [];
 
 function Teste ({navigation}){
+
+    const [produtos, setProd] = useState({});
+
+    const renderItem = ({ item }) => (
+      <Item title={item.title} />
+    );
+
+      const getTraders = async() =>{
+        try {
+          const {data} = await api("/trader/list");
+          return data;
+        } catch (error) {
+          const {response} = error;
+          if(response?.data){
+            return response.data;
+          }
+          return{error: error.message || error}
+          
+        }
+      }
 
     const [modalVisible, setModalVisible] = useState(false);
     return (
       <View style={styles.centeredView}>
-        <Text>MODAL!!</Text>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-
-
-
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </Pressable>
+        <Text>Lista de Traders</Text>
+        <FlatList
+        data={produtos}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
+        
       </View>
     );
   };
