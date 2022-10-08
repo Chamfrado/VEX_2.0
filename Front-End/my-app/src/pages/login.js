@@ -26,7 +26,7 @@ function autentication(){
               Alert.alert('Telefone ou senha errado');
             }else{
               Alert.alert('Logado com Sucesso!');
-              navigation.navigate('Home');
+              navigation.navigate('Home', {trader_id : data.trader[0].id} );
             }
 
          })

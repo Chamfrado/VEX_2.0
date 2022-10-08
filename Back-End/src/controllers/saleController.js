@@ -5,7 +5,7 @@ const Sale = require('../models/sale')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, date_sale DATE, status_sale VARCHAR(50), trader_id INTEGER, client_id INTEGER, purchase_in_installments VARCHAR(50), payment_control VARCHAR(50), total_sale FLOAT ,PRIMARY KEY(id))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, date_sale DATE, status_sale VARCHAR(50), trader_id INTEGER, client_id INTEGER, purchase_in_installments VARCHAR(50), payment_control VARCHAR(50), total_sale FLOAT ,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id), FOREIGN KEY (client_id) REFERENCES client(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;

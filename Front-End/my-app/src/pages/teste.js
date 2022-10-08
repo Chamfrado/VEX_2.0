@@ -22,6 +22,7 @@ function Teste ({navigation}){
       console.log(error);
     });
 
+    
     const [modalVisible, setModalVisible] = useState(false);
     return (
       <View style={styles.centeredView}>
