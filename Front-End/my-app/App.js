@@ -25,7 +25,6 @@ export default function App() {
             <Stack.Screen name='Historic' component={HistoricScreen} options={{ title: 'Histórico'}}/>
             <Stack.Screen name='User' component={UserScreen} options={{ title: 'Usuario'}}/>
             <Stack.Screen name='Sale' component={SaleScreen} options={{ title: 'Vendas'}}/>
-            <Stack.Screen name='Teste' component={TesteScreen} options={{ title: 'Teste'}}/>
             
         </Stack.Navigator>
       </NavigationContainer>

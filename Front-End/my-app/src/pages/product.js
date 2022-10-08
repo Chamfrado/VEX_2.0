@@ -11,47 +11,42 @@ import api from '../../services/api'
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <Text style={[styles.item_title, textColor]}>{item.id}</Text>
     <Text style={[styles.item_title, textColor]}>{item.name_product}</Text>
   </TouchableOpacity>
 );
 
 
 
-function Product({ navigation , route}) {
+function Product({ navigation, route }) {
 
   const traderID = route.params?.trader_id;
-  
-  function getProdutoId(){
-    api.get('product/getById', {id:  selectedId}).then(({data}) =>{
-      console.log(data);
-    }
-    )
+
+
+
+
+  function addProduto() {
+    api.post('product/add',
+      {
+        name_product: nameProduct,
+        price_product: priceProduct,
+        quantity_product: quantityProduct,
+        description_product: descriptionProduct,
+        trader_id: route.params?.trader_id
+      }).then(({ data }) => {
+        Alert.alert('Produto adicionado com sucesso!');
+
+      })
   }
-
-
-  function salvarProduto(){
-    api.post('product/add', 
-    {name_product: nameProduct, 
-      price_product: priceProduct, 
-      quantity_product: quantityProduct, 
-      description_product: descriptionProduct, 
-      trader_id: route.params?.trader_id
-    } ).then(({data}) =>{
-      Alert.alert('Produto adicionado com sucesso!');
-
-    })
-  }
-
   const [modal2Visible, setModal2Visible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [produtos, setProd] = useState([]);
 
   //name_product, price_product, quantity_product, description_product, trader_id
-  const[nameProduct, setNameProduct] = useState('');
-  const[priceProduct, setPriceProduct] = useState('');
-  const[quantityProduct, setQuantityProduct] = useState('');
-  const[descriptionProduct, setDescriptionProduct] = useState('');
-  
+  const [nameProduct, setNameProduct] = useState('');
+  const [priceProduct, setPriceProduct] = useState('');
+  const [quantityProduct, setQuantityProduct] = useState('');
+  const [descriptionProduct, setDescriptionProduct] = useState('');
 
   useEffect(() => {
     api.get('product/list').then(({ data }) => {
@@ -74,6 +69,58 @@ function Product({ navigation , route}) {
       />
     );
   };
+
+  const [selectedProduct, setSelectedProduct] = useState('');
+
+
+
+  function deleteProduto() {
+    console.log(selectedId);
+    api.delete('product/delete',{data: {
+      id: selectedId
+    }}).then(({ data }) => {
+      Alert.alert('Produto Deletado com sucesso!')
+      console.log(data);
+    });
+  }
+
+  function salvarProduto() {
+    api.put('product/update', {
+      id: selectedId,
+      name_product: nameProduct,
+      price_product: priceProduct,
+      quantity_product: quantityProduct,
+      description_product: descriptionProduct,
+      trader_id: route.params?.trader_id
+    }).then(({ data }) => {
+      Alert.alert('Produto Atualizado com sucesso!')
+    });
+  }
+
+
+
+
+
+
+  function getProdutoId() {
+    console.log(selectedId);
+
+    api.post('product/getById',
+      {
+        id: selectedId
+      }).then(({ data }) => {
+        console.log(data);
+        setSelectedProduct(data);
+
+
+      })
+  }
+
+
+
+
+
+  console.log(selectedProduct);
 
   return (
     <View style={styles.container}>
@@ -103,10 +150,28 @@ function Product({ navigation , route}) {
 
       <Pressable
         style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModal2Visible(true) }
+        onPress={() => setModal2Visible(true)}
         onPressOut={() => getProdutoId()}
       >
         <Text style={styles.textStyle}>Editar</Text>
+      </Pressable>
+
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => {Alert.alert(
+          "Deletar Produto",
+          "Deseja deletar o produto?",
+          [
+            {
+              text: "Cancelar",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "Sim", onPress: () => deleteProduto() }
+          ]
+        );}}
+      >
+        <Text style={styles.textStyle}>Deletar</Text>
       </Pressable>
 
 
@@ -128,33 +193,33 @@ function Product({ navigation , route}) {
             <View style={styles.product_textb}>
               <Text style={styles.textmodal}>Nome:</Text>
               <TextInput style={styles.textinput}
-               onChangeText={newnameProduct => setNameProduct(newnameProduct)}
-               placeholder='Nome do Produto' />
+                onChangeText={newnameProduct => setNameProduct(newnameProduct)}
+                placeholder='Nome do Produto' />
             </View>
             <View style={styles.product_textb}>
               <Text style={styles.textmodal}>Preço:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='R$000,00'
-              onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} />
+              <TextInput style={styles.textinput}
+                placeholder='R$000,00'
+                onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} />
             </View>
             <View style={styles.product_textb}>
               <Text style={styles.textmodal}>Quantidade:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='X' 
-              onChangeText={newquantiryProduct => setQuantityProduct(newquantiryProduct)}/>
+              <TextInput style={styles.textinput}
+                placeholder='X'
+                onChangeText={newquantiryProduct => setQuantityProduct(newquantiryProduct)} />
             </View>
             <View style={styles.product_desc}>
               <Text>Descrição:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='Insira aqui a descrição do produto' 
-              onChangeText={newdescriptionProduct => setDescriptionProduct(newdescriptionProduct)}/>
+              <TextInput style={styles.textinput}
+                placeholder='Insira aqui a descrição do produto'
+                onChangeText={newdescriptionProduct => setDescriptionProduct(newdescriptionProduct)} />
             </View>
             <View style={styles.btnview}>
-              <Pressable 
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => salvarProduto()} 
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => addProduto()}
               >
-                <Text>Salvar</Text>
+                <Text>Adicionar</Text>
 
               </Pressable>
               <Pressable
@@ -171,7 +236,7 @@ function Product({ navigation , route}) {
       </Modal>
 
 
-  
+
       <Modal
         animationType=' slide '
         transparent={true}
@@ -184,37 +249,36 @@ function Product({ navigation , route}) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.title_modal}>
-              <Text >Cadastrar Produto</Text>
+              <Text >Editar Produto</Text>
             </View>
 
             <View style={styles.product_textb}>
               <Text style={styles.textmodal}>Nome:</Text>
               <TextInput style={styles.textinput}
-               onChangeText={newnameProduct => setNameProduct(newnameProduct)}
-               placeholder='Nome do Produto' />
+                onChangeText={newnameProduct => setNameProduct(newnameProduct)} />
             </View>
             <View style={styles.product_textb}>
               <Text style={styles.textmodal}>Preço:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='R$000,00'
-              onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} />
+              <TextInput style={styles.textinput}
+                placeholder='R$000,00'
+                onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} />
             </View>
             <View style={styles.product_textb}>
               <Text style={styles.textmodal}>Quantidade:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='X' 
-              onChangeText={newquantiryProduct => setQuantityProduct(newquantiryProduct)}/>
+              <TextInput style={styles.textinput}
+                placeholder='X'
+                onChangeText={newquantiryProduct => setQuantityProduct(newquantiryProduct)} />
             </View>
             <View style={styles.product_desc}>
               <Text>Descrição:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='Insira aqui a descrição do produto' 
-              onChangeText={newdescriptionProduct => setDescriptionProduct(newdescriptionProduct)}/>
+              <TextInput style={styles.textinput}
+                placeholder='Insira aqui a descrição do produto'
+                onChangeText={newdescriptionProduct => setDescriptionProduct(newdescriptionProduct)} />
             </View>
             <View style={styles.btnview}>
-              <Pressable 
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => salvarProduto()} 
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => salvarProduto()}
               >
                 <Text>Salvar</Text>
 
@@ -325,12 +389,17 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
+    flexDirection: 'row',
+    borderWidth: 2,
+    justifyContent: 'space-between'
+
   },
   item_title: {
     fontSize: 24,
   },
   title_modal: {
-    alignSelf: "center",  },
+    alignSelf: "center",
+  },
   product_textb: {
     flexDirection: 'row',
     alignSelf: "flex-start",
@@ -339,7 +408,7 @@ const styles = StyleSheet.create({
   textmodal: {
     paddingRight: 10
   },
-  btnview:{
+  btnview: {
     alignSelf: 'center'
   }
 });

@@ -8,7 +8,7 @@ const Client = require('../models/client')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS client(id int AUTO_INCREMENT, name_client VARCHAR(50), phone_client VARCHAR(50),trader_id INTEGER ,PRIMARY KEY(id))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS client(id int AUTO_INCREMENT, name_client VARCHAR(50), phone_client VARCHAR(50),trader_id INTEGER ,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -110,10 +110,11 @@ const updateClient = (req, res) => {
             
             name_client: req.body.name_client,
             phone_client: req.body.phone_client,
+            trader_id: req.body.trader_id,
             id: req.body.id
         };
 
-        const sqlQuery = 'UPDATE client SET name_client = ?, phone_client = ? WHERE id = ?';
+        const sqlQuery = 'UPDATE client SET ? WHERE id = '+req.body.id;
 
         database.query(sqlQuery, client, (err, row) => {
             if (err) throw err;

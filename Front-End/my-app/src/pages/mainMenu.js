@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
      alignSelf:'stretch',
      marginLeft: 100,
      marginRight: 100,
+     borderWidth: 1
      
      
 
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 20,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-      borderWidth:4
+      borderWidth:1
       
       
     },

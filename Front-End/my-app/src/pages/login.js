@@ -63,10 +63,7 @@ function autentication(){
           title="Entrar!"
           onPress={() => autentication()}
         />
-        <Button
-          title="TESTE!"
-          onPress={() => navigation.navigate('Teste')}
-        />
+       
         <Text>VEX</Text>
         <StatusBar style="auto" />
       </View>

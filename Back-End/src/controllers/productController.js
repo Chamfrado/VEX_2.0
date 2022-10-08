@@ -92,6 +92,8 @@ const deleteProduct = (req, res) => {
 
         const sqlQuery = 'DELETE FROM product WHERE id = ?';
 
+        console.log(`sqlQuery: ${sqlQuery}`);
+        
         database.query(sqlQuery, req.body.id, (err, row) => {
             if (err) throw err;
 

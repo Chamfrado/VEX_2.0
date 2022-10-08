@@ -22,7 +22,7 @@ function Client({ navigation , route}) {
   const traderID = route.params?.trader_id;
   
   
-  function salvarClient(){
+  function addClient(){
     api.post('client/add', 
     {name_client: nameClient, 
       phone_client: phoneClient, 
@@ -33,7 +33,7 @@ function Client({ navigation , route}) {
     })
   }
 
-
+  const [modal2Visible, setModal2Visible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [clientes, setClientes] = useState([]);
 
@@ -64,6 +64,40 @@ function Client({ navigation , route}) {
     );
   };
 
+
+  
+  function deleteClient() {
+    console.log(selectedId);
+    api.delete('client/delete',{data: {
+      id: selectedId
+    }}).then(({ data }) => {
+      Alert.alert('Produto Deletado com sucesso!')
+      console.log(data);
+    });
+  }
+
+
+
+  function salvarClient() {
+    api.put('client/update', {
+      id: selectedId,
+      name_client: nameClient,
+      phone_client: phoneClient,
+      trader_id: route.params?.trader_id
+    }).then(({ data }) => {
+      Alert.alert('Produto Atualizado com sucesso!')
+      console.log(data);
+    });
+  }
+
+
+
+
+
+
+
+
+
   return (
     <View style={styles.container}>
 
@@ -88,6 +122,31 @@ function Client({ navigation , route}) {
         onPress={() => setModalVisible(true)}
       >
         <Text style={styles.textStyle}>Cadastrar</Text>
+      </Pressable>
+
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => setModal2Visible(true)}
+      >
+        <Text style={styles.textStyle}>Editar</Text>
+      </Pressable>
+
+      <Pressable
+        style={[styles.button, styles.buttonOpen]}
+        onPress={() => {Alert.alert(
+          "Deletar Cliente",
+          "Deseja deletar o produto?",
+          [
+            {
+              text: "Cancelar",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel"
+            },
+            { text: "Sim", onPress: () => deleteClient() }
+          ]
+        );}}
+      >
+        <Text style={styles.textStyle}>Deletar</Text>
       </Pressable>
 
 
@@ -122,6 +181,56 @@ function Client({ navigation , route}) {
             <View style={styles.btnview}>
               <Pressable 
               style={[styles.button, styles.buttonClose]}
+              onPress={() => addClient()} 
+              >
+                <Text>Adicionar</Text>
+
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text>Voltar</Text>
+              </Pressable>
+            </View>
+
+
+          </View>
+        </View>
+      </Modal>
+
+      
+      <Modal
+        animationType=' slide '
+        transparent={true}
+        visible={modal2Visible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setModalVisible(!modal2Visible);
+        }}
+      >
+         <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.title_modal}>
+              <Text >Cadastrar Produto</Text>
+            </View>
+
+            <View style={styles.client_textb}>
+              <Text style={styles.textmodal}>Nome:</Text>
+              <TextInput style={styles.textinput}
+               onChangeText={newnameCLient => setNameClient(newnameCLient)}
+               placeholder='Nome do Cliente' />
+            </View>
+            <View style={styles.client_textb}>
+              <Text style={styles.textmodal}>Telefone:</Text>
+              <TextInput style={styles.textinput} 
+              placeholder='(xx) x xxxx-xxxx'
+              onChangeText={newphoneClient => setPhoneClient(newphoneClient)} />
+            </View>
+            
+            <View style={styles.btnview}>
+              <Pressable 
+              style={[styles.button, styles.buttonClose]}
               onPress={() => salvarClient()} 
               >
                 <Text>Salvar</Text>
@@ -129,7 +238,7 @@ function Client({ navigation , route}) {
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => setModal2Visible(!modal2Visible)}
               >
                 <Text>Voltar</Text>
               </Pressable>

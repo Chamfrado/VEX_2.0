@@ -117,6 +117,8 @@ const updateTrader = (req, res) => {
             date_term: req.body.date_term,
         };
 
+        console.log(`sqlQuery: ${sqlQuery}`);
+        
         const sqlQuery = 'UPDATE trader SET ? WHERE id = '+ req.body.id;
         database.query(sqlQuery, Trader,  (err, row) => {
             if (err) throw err;
