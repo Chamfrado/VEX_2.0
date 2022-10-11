@@ -6,7 +6,7 @@ const Product = require('../models/product')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS product(id int AUTO_INCREMENT, name_product VARCHAR(50), price_product FLOAT, quantity_product INTEGER,description_product VARCHAR(50) ,trader_id INTEGER,PRIMARY KEY(id))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS product(id int AUTO_INCREMENT, name_product VARCHAR(50), price_product FLOAT, quantity_product INTEGER,description_product VARCHAR(50) ,trader_id INTEGER,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -25,7 +25,7 @@ const listAllProducts = (req, res) => {
     database.query(sqlQuery, (err, result) => {
         if (err) throw err;
 
-        res.json({ 'product': result });
+        res.send({ 'product': result });
     });
 };
 
@@ -42,7 +42,7 @@ const getProductById = (req, res) => {
         };
     }
 
-    const sqlQuery = 'SELECT * FROM product WHERE id = ?';
+    const sqlQuery = 'SELECT * FROM product WHERE id = '+ req.body.id;
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
@@ -92,6 +92,8 @@ const deleteProduct = (req, res) => {
 
         const sqlQuery = 'DELETE FROM product WHERE id = ?';
 
+        console.log(`sqlQuery: ${sqlQuery}`);
+        
         database.query(sqlQuery, req.body.id, (err, row) => {
             if (err) throw err;
 

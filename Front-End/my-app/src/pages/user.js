@@ -1,37 +1,82 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet,ScrollView, FlatList ,VirtualizedList,Button, Text, View , SectionList, Pressable, Modal, Alert, TextInput} from 'react-native';
 import { Header } from '../components/header'
+import api from '../../services/api'
 
 
 
+function User ({navigation, route}){
 
-function User ({navigation}){
+  const [traders, setTraders] = useState('');
+  const [nameTrader, setNameTrader] = useState('');
+  const [phoneTrader, setPhoneTrader] = useState('');
+  const [emailTrader, setEmailTrader] = useState('');
+  const [passTrader, setPassTrader] = useState('');
 
   
+
+  
+  useEffect(() => {
+    api.post('trader/getById',{id: route.params?.trader_id}).then(({data}) =>{
+
+      setTraders(data);
+      setNameTrader(data.trader[0].name_trader);
+      setPhoneTrader(data.trader[0].phone_trader);
+      setEmailTrader(data.trader[0].email_trader);
+      setPassTrader(data.trader[0].pass_trader);
+
+      
+    })
+  },[])
+
+  const date_acess = "2022-06-06";
+  const date_term= "2022-06-06";
+
+  console.log('=======================')
+  console.log(traders.trader)
+  console.log('=======================')
     const [modalVisible, setModalVisible] = useState(false);
+
+
+    function salvarTrader() {
+      api.put('trader/update', {
+        name_trader: nameTrader,
+        email_trader: emailTrader,
+        phone_trader: phoneTrader,
+        pass_trader: passTrader,
+        date_term: date_term,
+        date_acess: date_acess,
+        id: route.params?.trader_id
+      }).then(({ data }) => {
+        console.log(data);
+      });
+    }
+
+
     return (
       <View style={styles.container}>
-        <Text>Dados do Usuario</Text>
         
-        <View  style={styles.container}>
-            <Text>Nome: </Text>
-            <TextInput value='Lohran Cintra'/>
-            <Text>Telefone: </Text>
-            <TextInput value='35 9 9999 9999'/>
+        
+        <View style={styles.titleview}>
+        <Text style={styles.title}>Dados do Usuario</Text>
         </View>
-        <View  style={styles.container}>
-            <Text>Email: </Text>
-            <TextInput value='teste@vex.com.br'/>
+
+
+        <View style={styles.dataView} >
+            <Text style={styles.menutext} >Nome: {nameTrader} </Text>
+            <Text style={styles.menutext} >Telefone: {phoneTrader} </Text>
+            <Text style={styles.menutext} >Email: {emailTrader}</Text>
         </View>
+        
         <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
         >
-        <Text style={styles.textStyle}>Alterar Senha</Text>
+        <Text style={styles.textStyle}>Alterar Dados</Text>
         </Pressable>
         
         <Modal 
@@ -47,16 +92,24 @@ function User ({navigation}){
             <View style={styles.modalView}>
               <Text style={styles.tituloAlterarSenha}>Alterar Senha</Text>
               <View style={styles.senha}>
-                <Text>Nova Senha:</Text>
-                <TextInput style={styles.textinput} secureTextEntry={true}  placeholder='********'/>
+                <Text>Nome:</Text>
+                <TextInput style={styles.textinput} onChangeText={newnameTrader => setNameTrader(newnameTrader)}  placeholder='********'/>
               </View>
               <View style={styles.senha}>
-                <Text>Confirme a Senha:</Text>
-                <TextInput style={styles.textinput}  secureTextEntry={true}  placeholder='********'/>
+                <Text>Telefone:</Text>
+                <TextInput style={styles.textinput}  onChangeText={newphoneTrader => setNameTrader(newphoneTrader)}   placeholder='********'/>
+              </View>
+              <View style={styles.senha}>
+                <Text>Email:</Text>
+                <TextInput style={styles.textinput}  onChangeText={newemailTrader => setNameTrader(newemailTrader)}   placeholder='********'/>
+              </View>
+              <View style={styles.senha}>
+                <Text>Nova Senha:</Text>
+                <TextInput style={styles.textinput} secureTextEntry={true} onChangeText={newpassTrader => setNameTrader(newpassTrader)}  placeholder='********'/>
               </View>
               <Button
               title='Salvar'
-              onPress={() => Alert.alert('Evento Salvar')}
+              onPress={() => salvarTrader()}
               />
               <Pressable 
               style={[styles.button, styles.buttonClose]}
@@ -77,9 +130,9 @@ function User ({navigation}){
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: '#87CEFA',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-evenly',
     },
     logo:{
       width: 150,
@@ -115,7 +168,7 @@ const styles = StyleSheet.create({
     },
     button: {
       borderRadius: 20,
-      padding: 10,
+      margin: 10,
       elevation: 2
     },
     buttonOpen: {
@@ -143,6 +196,24 @@ const styles = StyleSheet.create({
     tituloAlterarSenha:{
       paddingBottom: 30,
       fontSize:20
+    },
+    dataView:{
+      backgroundColor: 'white',
+      alignItems: "stretch",
+      justifyContent: "space-evenly",
+      borderWidth: 1
+    },
+    titleview:{
+      height: 100,
+      alignItems: 'stretch'
+
+    },
+    title:{
+      fontSize: 32
+    },
+    menutext:{
+      fontSize: 29,
+      borderWidth: 1
     }
   });
 

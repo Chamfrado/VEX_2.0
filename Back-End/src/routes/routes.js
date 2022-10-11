@@ -55,7 +55,7 @@ routes.get('/product/init', productController.initDatabase);
 
 routes.get('/product/list', productController.listAllProducts);
 
-routes.get('/product/getById',body('id').not().escape() ,productController.getProductById);
+routes.post('/product/getById',body('id').not().escape() ,productController.getProductById);
 
 routes.post('/product/add',
     body('name_product').not().isEmpty().escape(),
@@ -119,7 +119,7 @@ routes.get('/trader/init', traderController.initDatabase);
 
 routes.get('/trader/list', traderController.listAllTraders);
 
-routes.get('/trader/getById',body('id').not().escape() ,traderController.getTraderById);
+routes.post('/trader/getById',body('id').not().escape() ,traderController.getTraderById);
 
 routes.post('/trader/add',
     body('name_trader').not().isEmpty().escape(),

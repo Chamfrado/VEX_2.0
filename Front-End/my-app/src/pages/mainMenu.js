@@ -8,10 +8,9 @@ import { Header } from '../components/header'
 
 // import { Container } from './styles';
 
-function Home ({navigation}){
+function Home ({navigation, route}){
     return (
       <View style={styles.container}>
-        
           
 
           <View style={styles.containerTitle}>
@@ -22,7 +21,7 @@ function Home ({navigation}){
             <Button
               style={styles.btn}
               title="Clientes"
-               onPress={() => navigation.navigate('Client')}/>
+               onPress={() => navigation.navigate('Client', {trader_id : route.params.trader_id })}/>
            
            
            
@@ -32,7 +31,7 @@ function Home ({navigation}){
           <Button
             style={styles.btn}
            title='Produtos'
-            onPress={() => navigation.navigate('Product')}/>
+            onPress={() => navigation.navigate('Product', {trader_id : route.params.trader_id })}/>
           </View>
 
           <View style={styles.containerBtn}>
@@ -40,7 +39,7 @@ function Home ({navigation}){
             <Button
             style={styles.btn}
            title='Vendas'
-           onPress={() => navigation.navigate('Sale')}/>
+           onPress={() => navigation.navigate('Sale', {trader_id : route.params.trader_id })}/>
           </View>
 
           <View style={styles.containerBtn}>
@@ -48,7 +47,7 @@ function Home ({navigation}){
             <Button
             style={styles.btn}
             title='Historico'
-            onPress={() => navigation.navigate('Historic')}/>
+            onPress={() => navigation.navigate('Historic', {trader_id : route.params.trader_id })}/>
             
           </View>
 
@@ -56,7 +55,7 @@ function Home ({navigation}){
            <Button
            style={styles.btn}
            title='Usuario'
-           onPress={() => navigation.navigate('User')}/>
+           onPress={() => navigation.navigate('User', {trader_id : route.params.trader_id })}/>
           </View>
           <View style={styles.containerBottom}>
             <Text>VEX</Text>
@@ -90,6 +89,7 @@ const styles = StyleSheet.create({
      alignSelf:'stretch',
      marginLeft: 100,
      marginRight: 100,
+     borderWidth: 1
      
      
 
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
       borderBottomRightRadius: 20,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
-      borderWidth:4
+      borderWidth:1
       
       
     },
