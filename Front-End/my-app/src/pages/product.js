@@ -38,6 +38,7 @@ function Product({ navigation, route }) {
 
       })
   }
+            //Substituir por Screen
   const [modal2Visible, setModal2Visible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [produtos, setProd] = useState([]);
@@ -54,7 +55,7 @@ function Product({ navigation, route }) {
       console.log(data);
     });
   }, [])
-
+                //VOLTAR LAYOUT ANTIGO!
   const [selectedId, setSelectedId] = useState(null);
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#00008B" : "#87CEFA";
@@ -118,7 +119,7 @@ function Product({ navigation, route }) {
 
 
 
-
+//Flatlis !!!! Ordenar em ordem alfabetica e colocar dados reais!
 
   console.log(selectedProduct);
 
@@ -137,7 +138,7 @@ function Product({ navigation, route }) {
           keyExtractor={(item) => item.id}
           extraData={selectedId}
         />
-
+        
       </View>
 
 
@@ -159,19 +160,19 @@ function Product({ navigation, route }) {
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => {Alert.alert(
-          "Deletar Produto",
-          "Deseja deletar o produto?",
+          "Excluir Produto",
+          "Deseja excluir o produto?",
           [
             {
               text: "Cancelar",
               onPress: () => console.log("Cancel Pressed"),
-              style: "cancel"
+              style: "Cancelar"
             },
             { text: "Sim", onPress: () => deleteProduto() }
           ]
         );}}
       >
-        <Text style={styles.textStyle}>Deletar</Text>
+        <Text style={styles.textStyle}>Excluir</Text>
       </Pressable>
 
 
@@ -352,7 +353,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-    margin: 10
+    margin: 10,
+    //Cor preta!
   },
   buttonOpen: {
     backgroundColor: "WHite",

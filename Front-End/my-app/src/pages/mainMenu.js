@@ -14,7 +14,7 @@ function Home ({navigation, route}){
           
 
           <View style={styles.containerTitle}>
-          <Text style={styles.titleText}>MENU PRINCIPAL</Text>
+          <Text style={styles.titleText}>Suas opções:</Text>
           </View>
 
            <View style={styles.containerBtn}>
@@ -46,7 +46,7 @@ function Home ({navigation, route}){
 
             <Button
             style={styles.btn}
-            title='Historico'
+            title='Histórico'
             onPress={() => navigation.navigate('Historic', {trader_id : route.params.trader_id })}/>
             
           </View>
@@ -54,7 +54,7 @@ function Home ({navigation, route}){
           <View style={styles.containerBtn}>
            <Button
            style={styles.btn}
-           title='Usuario'
+           title='Perfil'
            onPress={() => navigation.navigate('User', {trader_id : route.params.trader_id })}/>
           </View>
           <View style={styles.containerBottom}>
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
      alignSelf:'stretch',
      marginLeft: 100,
      marginRight: 100,
-     borderWidth: 1
+     borderWidth: 1,
+     borderRadius: 30
      
      
 
@@ -99,8 +100,7 @@ const styles = StyleSheet.create({
       borderBottomLeftRadius: 20,
       borderBottomRightRadius: 20,
       borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      borderWidth:1
+      borderTopRightRadius: 20
       
       
     },

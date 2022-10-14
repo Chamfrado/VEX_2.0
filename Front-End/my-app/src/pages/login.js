@@ -51,20 +51,19 @@ function autentication(){
           defaultValue={username}
           dataDetectorTypes='phoneNumber'/>
         <Text></Text>
-        <Text style={styles.credentials}>Password</Text>
+        <Text style={styles.credentials}>Senha</Text>
         <TextInput 
         style={styles.textinput} 
         secureTextEntry={true} 
         textContentType='password'  
-        placeholder='Password'
+        placeholder='Senha'
         onChangeText={newPassword => setPassword(newPassword)}/>
         <Text style={styles.forgot}>Esqueceu a senha?</Text>
         <Button
-          title="Entrar!"
+          title="Entrar"
           onPress={() => autentication()}
         />
        
-        <Text>VEX</Text>
         <StatusBar style="auto" />
       </View>
     );
@@ -75,7 +74,7 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#87CEFA',
       alignItems: 'center',
-      justifyContent: 'space-evenly',
+      justifyContent: 'space-evenly'
     },
     logo:{
       height:200,
@@ -90,13 +89,16 @@ const styles = StyleSheet.create({
     },
     textinput:{
       
-      borderWidth: 2,
+      
       alignSelf:'stretch',
       backgroundColor: '#fff',
       marginLeft: 40,
       marginRight:40,
-      marginTop: -10,
-      textAlign: 'center'
+      marginTop: -25,
+      marginBottom: 10,
+      textAlign: 'center',
+      fontSize: 20
+
     },viewLogo:{
       
     }

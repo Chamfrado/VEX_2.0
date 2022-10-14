@@ -201,7 +201,6 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
       alignItems: "stretch",
       justifyContent: "space-evenly",
-      borderWidth: 1
     },
     titleview:{
       height: 100,
@@ -212,8 +211,7 @@ const styles = StyleSheet.create({
       fontSize: 32
     },
     menutext:{
-      fontSize: 29,
-      borderWidth: 1
+      fontSize: 29
     }
   });
 

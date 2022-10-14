@@ -134,8 +134,8 @@ function Client({ navigation , route}) {
       <Pressable
         style={[styles.button, styles.buttonOpen]}
         onPress={() => {Alert.alert(
-          "Deletar Cliente",
-          "Deseja deletar o produto?",
+          "Excluir Cliente",
+          "Deseja excluir o produto?",
           [
             {
               text: "Cancelar",
@@ -146,7 +146,7 @@ function Client({ navigation , route}) {
           ]
         );}}
       >
-        <Text style={styles.textStyle}>Deletar</Text>
+        <Text style={styles.textStyle}>Excluir</Text>
       </Pressable>
 
 
