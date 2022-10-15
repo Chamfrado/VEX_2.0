@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, Button, TextInput , Image, Text, View , Alert} from 'react-native';
+import { StyleSheet, Button, TextInput , Image, Text, View ,Pressable ,Alert} from 'react-native';
 import { Header } from '../components/header';
 import api from '../../services/api';
 
@@ -59,10 +59,19 @@ function autentication(){
         placeholder='Senha'
         onChangeText={newPassword => setPassword(newPassword)}/>
         <Text style={styles.forgot}>Esqueceu a senha?</Text>
-        <Button
-          title="Entrar"
-          onPress={() => autentication()}
-        />
+        <View style={styles.containerBtn}>
+        <Pressable
+            style={styles.btn}
+            onPress={() => autentication()}>
+              <Text style={styles.btnText }>Entrar</Text>
+        </Pressable>
+        </View>
+        
+        <Pressable
+                onPress={() => navigation.navigate('Teste' )}
+              >
+                <Text>TESTE</Text>
+        </Pressable>
        
         <StatusBar style="auto" />
       </View>
@@ -99,8 +108,23 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       fontSize: 20
 
-    },viewLogo:{
-      
+    },btn: {
+      alignSelf: 'stretch',
+      backgroundColor: '#0000cd',
+      borderTopLeftRadius: 10,
+      borderBottomEndRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10
+  
+    }, btnText: {
+      fontSize: 20,
+      color: 'white',
+      alignSelf: 'center'
+    },containerBtn: {
+      alignSelf: 'stretch',
+      marginLeft: 100,
+      marginRight: 100,
+  
     }
   });
 

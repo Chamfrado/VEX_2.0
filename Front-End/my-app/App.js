@@ -18,25 +18,14 @@ export default function App() {
   return(
       <NavigationContainer>
         <Stack.Navigator initialRouteName='Login'>
-<<<<<<< Updated upstream
             <Stack.Screen name='Login' component={LoginScreen} />
-            <Stack.Screen name='Home' component={HomeScreen} options={{ title: 'Logout'}}/>
+            <Stack.Screen name='Home' component={HomeScreen} options={{ title: 'Sair'}}/>
             <Stack.Screen name='Client' component={ClientScreen} options={{ title: 'Voltar'}}/>
             <Stack.Screen name='Product' component={ProductScreen} options={{ title: 'Voltar'}}/>
             <Stack.Screen name='Historic' component={HistoricScreen} options={{ title: 'Voltar'}}/>
             <Stack.Screen name='User' component={UserScreen} options={{ title: 'Voltar'}}/>
             <Stack.Screen name='Sale' component={SaleScreen} options={{ title: 'Voltar'}}/>
             <Stack.Screen name='Teste' component={TesteScreen} options={{ title: 'Teste'}}/>
-=======
-            <Stack.Screen name='Login' component={LoginScreen} options={{ title: 'Acesso'}} />
->>>>>>> Stashed changes
-            <Stack.Screen name='Home' component={HomeScreen} options={{ title: 'Menu Principal'}}/>
-            <Stack.Screen name='Client' component={ClientScreen} options={{ title: 'Clientes'}}/>
-            <Stack.Screen name='Product' component={ProductScreen} options={{ title: 'Produto'}}/>
-            <Stack.Screen name='Historic' component={HistoricScreen} options={{ title: 'Histórico'}}/>
-            <Stack.Screen name='User' component={UserScreen} options={{ title: 'Usuario'}}/>
-            <Stack.Screen name='Sale' component={SaleScreen} options={{ title: 'Vendas'}}/>
-            
         </Stack.Navigator>
       </NavigationContainer>
   );

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "expo": "^46.0.14",
-    "expo-cli": "^6.0.6"
+    "expo-cli": "^6.0.6",
+    "react-native-table-component": "^1.2.2"
   }
 }

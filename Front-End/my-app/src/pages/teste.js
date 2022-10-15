@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import TableProdutos from '../components/TableProdutos';
 import { StyleSheet,SafeAreaView ,ScrollView, FlatList ,VirtualizedList,Button, Text, View , SectionList, Pressable, Modal, Alert, TextInput} from 'react-native';
 import { Header } from '../components/header'
 import api from '../../services/api';
@@ -12,26 +14,9 @@ const data = [];
 
 function Teste ({navigation}){
 
-    const [produtos, setProd] = useState({});
-
-
+   
+    <TableProdutos/>
     
-    api.get('trader/list').then(function (response) {
-      console.log(response.data);
-    }).catch(function (error) {
-      console.log(error);
-    });
-
-    
-    const [modalVisible, setModalVisible] = useState(false);
-    return (
-      <View style={styles.centeredView}>
-        <Text>Lista de Traders</Text>
-        <FlatList
-      />
-        
-      </View>
-    );
   };
   
   const styles = StyleSheet.create({
