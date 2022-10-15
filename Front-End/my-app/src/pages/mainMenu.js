@@ -109,7 +109,15 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderBottomEndRadius: 10,
     borderTopRightRadius: 10,
-    borderBottomLeftRadius: 10
+    borderBottomLeftRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 10
 
   }, btnText: {
     fontSize: 20,

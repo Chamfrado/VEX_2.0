@@ -78,19 +78,6 @@ function Client({ navigation , route}) {
 
 
 
-  function salvarClient() {
-    api.put('client/update', {
-      id: selectedId,
-      name_client: nameClient,
-      phone_client: phoneClient,
-      trader_id: route.params?.trader_id
-    }).then(({ data }) => {
-      Alert.alert('Produto Atualizado com sucesso!')
-      console.log(data);
-    });
-  }
-
-
 
 
 
@@ -150,104 +137,7 @@ function Client({ navigation , route}) {
       </Pressable>
 
 
-      <Modal
-        animationType=' slide '
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.title_modal}>
-              <Text >Cadastrar Produto</Text>
-            </View>
-
-            <View style={styles.client_textb}>
-              <Text style={styles.textmodal}>Nome:</Text>
-              <TextInput style={styles.textinput}
-               onChangeText={newnameCLient => setNameClient(newnameCLient)}
-               placeholder='Nome do Cliente' />
-            </View>
-            <View style={styles.client_textb}>
-              <Text style={styles.textmodal}>Telefone:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='(xx) x xxxx-xxxx'
-              onChangeText={newphoneClient => setPhoneClient(newphoneClient)} />
-            </View>
-            
-            <View style={styles.btnview}>
-              <Pressable 
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => addClient()} 
-              >
-                <Text>Adicionar</Text>
-
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text>Voltar</Text>
-              </Pressable>
-            </View>
-
-
-          </View>
-        </View>
-      </Modal>
-
       
-      <Modal
-        animationType=' slide '
-        transparent={true}
-        visible={modal2Visible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modal2Visible);
-        }}
-      >
-         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.title_modal}>
-              <Text >Cadastrar Produto</Text>
-            </View>
-
-            <View style={styles.client_textb}>
-              <Text style={styles.textmodal}>Nome:</Text>
-              <TextInput style={styles.textinput}
-               onChangeText={newnameCLient => setNameClient(newnameCLient)}
-               placeholder='Nome do Cliente' />
-            </View>
-            <View style={styles.client_textb}>
-              <Text style={styles.textmodal}>Telefone:</Text>
-              <TextInput style={styles.textinput} 
-              placeholder='(xx) x xxxx-xxxx'
-              onChangeText={newphoneClient => setPhoneClient(newphoneClient)} />
-            </View>
-            
-            <View style={styles.btnview}>
-              <Pressable 
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => salvarClient()} 
-              >
-                <Text>Salvar</Text>
-
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModal2Visible(!modal2Visible)}
-              >
-                <Text>Voltar</Text>
-              </Pressable>
-            </View>
-
-
-          </View>
-        </View>
-      </Modal>
 
 
     </View>
@@ -307,7 +197,7 @@ const styles = StyleSheet.create({
     margin: 10
   },
   buttonOpen: {
-    backgroundColor: "WHite",
+    backgroundColor: "#111",
   },
   buttonClose: {
     backgroundColor: "#2196F3",

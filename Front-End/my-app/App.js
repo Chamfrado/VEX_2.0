@@ -11,6 +11,8 @@ import HistoricScreen from './src/pages/historic';
 import UserScreen from './src/pages/user';
 import SaleScreen from './src/pages/sale';
 import TesteScreen from './src/pages/teste';
+import AddProduct from './src/pages/Side_Pages/Product/AddProduct';
+import UpdateProduct from './src/pages/Side_Pages/Product/UpdateProduct';
 
 
 export default function App() {
@@ -26,6 +28,8 @@ export default function App() {
             <Stack.Screen name='User' component={UserScreen} options={{ title: 'Voltar'}}/>
             <Stack.Screen name='Sale' component={SaleScreen} options={{ title: 'Voltar'}}/>
             <Stack.Screen name='Teste' component={TesteScreen} options={{ title: 'Teste'}}/>
+            <Stack.Screen name='AddProduct' component={AddProduct} options={{title: 'Cancelar'}}/>
+            <Stack.Screen name='UpdateProduct' component={UpdateProduct} options={{title: 'Cancelar'}}/>
         </Stack.Navigator>
       </NavigationContainer>
   );
