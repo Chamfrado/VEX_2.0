@@ -8,46 +8,62 @@ import api from '../../services/api'
 
 
 
-
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-    <Text style={[styles.item_title, textColor]}>{item.name_client}</Text>
-  </TouchableOpacity>
-);
-
-
-
-function Client({ navigation , route}) {
+function Client({ navigation, route }) {
 
   const traderID = route.params?.trader_id;
-  
-  
-  function addClient(){
-    api.post('client/add', 
-    {name_client: nameClient, 
-      phone_client: phoneClient, 
-      trader_id: route.params?.trader_id
-    } ).then(({data}) =>{
-      Alert.alert('Cliente adicionado com sucesso!');
-      
-    })
-  }
 
-  const [modal2Visible, setModal2Visible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [clientes, setClientes] = useState([]);
 
-  //name_client, phone_client
-  const[nameClient, setNameClient] = useState('');
-  const[phoneClient, setPhoneClient] = useState('');
-  
 
-  useEffect(() => {
-    api.get('client/list').then(({ data }) => {
-      setClientes(data);
+  function deleteClient(ID) {
+    console.log(ID);
+    api.delete('client/delete', {
+      data: {
+        id: ID
+      }
+    }).then(({ data }) => {
+      Alert.alert('Cliente Deletado com sucesso!')
       console.log(data);
     });
-  }, [])
+  }
+
+  const [clientes, setClientes] = useState([]);
+
+
+
+
+  const Item = ({ item }) => (
+    <View style={[styles.item]}>
+
+      <Text style={[styles.item_title, styles.row]}>{item.name_client}</Text>
+      <Text style={[styles.item_title, styles.row]}>{item.phone_client}</Text>
+      <Pressable
+        onPress={() => navigation.navigate('UpdateClient', { trader_id: route.params.trader_id, client_id: item.id })}
+        style={styles.btn}>
+        <Text style={styles.btnText}>Alterar</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          Alert.alert(
+            "Excluir Cliente",
+            "Deseja excluir o client?",
+            [
+              {
+                text: "Cancelar",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "Cancelar"
+              },
+              { text: "Sim", onPress: () => deleteClient(item.id) }
+            ]
+          );
+        }}
+        style={styles.btn}>
+        <Text style={styles.btnText}>Excluir</Text>
+      </Pressable>
+
+    </View>
+
+
+  );
 
   const [selectedId, setSelectedId] = useState(null);
   const renderItem = ({ item }) => {
@@ -65,17 +81,27 @@ function Client({ navigation , route}) {
   };
 
 
-  
-  function deleteClient() {
-    console.log(selectedId);
-    api.delete('client/delete',{data: {
-      id: selectedId
-    }}).then(({ data }) => {
+  useEffect(() => {
+    api.get('client/list').then(({ data }) => {
+      setClientes(data);
+      console.log(data);
+    });
+  }, [])
+
+
+
+
+  function deleteClient(ID) {
+    console.log(ID);
+    api.delete('client/delete', {
+      data: {
+        id: ID
+      }
+    }).then(({ data }) => {
       Alert.alert('Produto Deletado com sucesso!')
       console.log(data);
     });
   }
-
 
 
 
@@ -94,6 +120,19 @@ function Client({ navigation , route}) {
 
 
       <View style={styles.viewList}>
+
+        <View style={[styles.item]}>
+
+          <Text style={[styles.item_title, styles.row]}>Nome</Text>
+          <Text style={[styles.item_title, styles.row]}>Telefone</Text>
+          <Text style={[styles.item_title, styles.row]}>Alterar</Text>
+          <Text style={[styles.item_title, styles.row]}>Excluir</Text>
+
+        </View>
+
+
+
+
         <FlatList
           data={clientes.clients}
           renderItem={renderItem}
@@ -104,45 +143,18 @@ function Client({ navigation , route}) {
       </View>
 
 
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.textStyle}>Cadastrar</Text>
-      </Pressable>
-
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModal2Visible(true)}
-      >
-        <Text style={styles.textStyle}>Editar</Text>
-      </Pressable>
-
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => {Alert.alert(
-          "Excluir Cliente",
-          "Deseja excluir o produto?",
-          [
-            {
-              text: "Cancelar",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel"
-            },
-            { text: "Sim", onPress: () => deleteClient() }
-          ]
-        );}}
-      >
-        <Text style={styles.textStyle}>Excluir</Text>
-      </Pressable>
-
-
-      
-
+      <View style={styles.containerBtn}>
+        <Pressable
+          onPress={() => navigation.navigate('AddClient', { trader_id: route.params.trader_id })}
+          style={styles.addBtn}>
+          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
+        </Pressable>
+      </View>
 
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -152,55 +164,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#87CEFA'
 
   },
+  containerTitle: {
+  },
   viewList: {
-    height: 200,
+    height: 400,
     backgroundColor: 'white',
     alignSelf: 'stretch',
-    marginLeft: 50,
-    marginRight: 50,
     borderWidth: 1,
 
-  },
-  textinput: {
-    idth: 200,
-    height: 25,
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    paddingLeft: 10
-
-  }, centeredView: {
-    flex: 1,
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    marginTop: 22
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "flex-start",
-    justifyContent: "space-evenly",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    margin: 10
-  },
-  buttonOpen: {
-    backgroundColor: "#111",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
   },
   textStyle: {
     color: "white",
@@ -210,12 +181,6 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center"
-  },
-  list: {
-    flex: 1,
-    borderWidth: 1,
-    borderWidth: 1,
-    alignSelf: 'stretch'
   },
   title: {
     flex: 1,
@@ -228,26 +193,49 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginHorizontal: 20,
   }, item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: 10,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    flexWrap: 'wrap'
   },
   item_title: {
-    fontSize: 24,
+    fontSize: 14,
   },
-  title_modal: {
-    alignSelf: "center",  },
-  client_textb: {
-    flexDirection: 'row',
-    alignSelf: "flex-start",
-    margin: 5
-  },
-  textmodal: {
-    paddingRight: 10
-  },
-  btnview:{
+  row: {
+    flex: 1,
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderRightWidth: 1
+  }, btn: {
+    flex: 1,
+    backgroundColor: '#87CEFA',
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    paddingEnd: 2,
+    borderRightWidth: 1,
+
+  }, btnText: {
+    fontSize: 20,
+    color: 'white',
     alignSelf: 'center'
+  },
+  addBtn: {
+    alignSelf: 'stretch',
+    backgroundColor: '#111',
+    borderTopLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    marginLeft: 20,
+    marginRight: 20
+  },
+  containerBtn: {
+    alignSelf: 'stretch',
+    marginLeft: 100,
+    marginRight: 100,
+
   }
 });
+
 
 export default Client;

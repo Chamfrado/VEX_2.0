@@ -18,7 +18,7 @@ const initDatabase = (req, res) => {
 
 //List All Product
 const listAllProducts = (req, res) => {
-    const sqlQuery = 'SELECT * FROM product';
+    const sqlQuery = 'SELECT * FROM product ORDER BY name_product asc';
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
@@ -70,6 +70,7 @@ const addProduct = (req, res) => {
         };
 
         const sqlQuery = 'INSERT INTO product SET ?';
+        console.log(`sqlQuery: ${sqlQuery}`);
 
         database.query(sqlQuery, Product, (err, row) => {
             if (err) throw err;
@@ -120,6 +121,8 @@ const updateProduct = (req, res) => {
         };
 
         const sqlQuery = 'UPDATE product SET  ? WHERE id = '+req.body.id;
+
+        console.log(`sqlQuery: ${sqlQuery}`);
 
         database.query(sqlQuery, Product, (err, row) => {
             if (err) throw err;

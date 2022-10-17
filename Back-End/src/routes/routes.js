@@ -28,7 +28,7 @@ routes.get('/client/init', clientController.initDatabase);
 
 routes.get('/client/list', clientController.listAllClients);
 
-routes.get('/client/getById',body('id').not().escape() ,clientController.getClientById);
+routes.post('/client/getById',body('id').not().escape() ,clientController.getClientById);
 
 routes.post('/client/add',
     body('name_client').not().isEmpty().escape(),

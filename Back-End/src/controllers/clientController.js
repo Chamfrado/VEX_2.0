@@ -44,7 +44,7 @@ const getClientById = (req, res) => {
         };
     }
 
-    const sqlQuery = 'SELECT * FROM client WHERE id = ?';
+    const sqlQuery = 'SELECT * FROM client WHERE id = ' + req.body.id ;
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
@@ -68,6 +68,7 @@ const addClient = (req, res) => {
         };
 
         const sqlQuery = 'INSERT INTO client SET ?';
+        console.log(`sqlQuery: ${sqlQuery}`);
 
         database.query(sqlQuery, client, (err, row) => {
             if (err) throw err;
@@ -88,7 +89,8 @@ const deleteClient = (req, res) => {
             id: req.body.id
         };
 
-        const sqlQuery = 'DELETE FROM client WHERE id = ?';
+        const sqlQuery = 'DELETE FROM client WHERE id = '+ req.body.id;
+        console.log(`sqlQuery: ${sqlQuery}`);
 
         database.query(sqlQuery, client, (err, row) => {
             if (err) throw err;
@@ -115,6 +117,7 @@ const updateClient = (req, res) => {
         };
 
         const sqlQuery = 'UPDATE client SET ? WHERE id = '+req.body.id;
+        console.log(`sqlQuery: ${sqlQuery}`);
 
         database.query(sqlQuery, client, (err, row) => {
             if (err) throw err;
