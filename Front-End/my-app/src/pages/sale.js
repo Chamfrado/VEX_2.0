@@ -3,201 +3,149 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet,ScrollView, FlatList ,VirtualizedList,Button, Text, View , SectionList, Pressable, Modal, Alert, TextInput} from 'react-native';
+import { StyleSheet, ScrollView, FlatList, VirtualizedList, Button, Text, View, SectionList, Pressable, Modal, Alert, TextInput } from 'react-native';
 import { Header } from '../components/header'
 
 const DATA = [
   {
-    id: 'bd7acbea-c1b1-46cs2s2-aed5-3ad53abb28ba',
-    title: '1 Item',
-  },{
-    id: 'bd7acbea-c1b1-46c14ss2-aed5-3ad53abb28ba',
-    title: '2 Item',
-  },{
-    id: 'bd7acbea-c1b1-46cs54s2-aed5-3ad53abb28ba',
-    title: '3 Item',
-  },{
-    id: 'bd7acbea-c1b1-46c233ss2-aed5-3ad53abb28ba',
-    title: '4 Item',
-  },{
-    id: 'bd7acbea-c1b1-46cs653s2-aed5-3ad53abb28ba',
-    title: '5 Item',
-  },{
-    id: 'bd7acbea-c1b1-46c3124ss2-aed5-3ad53abb28ba',
-    title: '6 Item',
-  },{
-    id: 'bd7acbea-c1b1-46cs4frs2-aed5-3ad53abb28ba',
-    title: '7 Item',
-  },{
-    id: 'bd7acbea-c1b1-46csdsas2-aed5-3ad53abb28ba',
-    title: '8 Item',
-  },{
-    id: 'bd7acbea-c1b1-46css2-aed5-3ad53abb28ba',
-    title: '9 Item',
-  },
+    id: "6",
+    name_product: "First Item",
+    price_product: "35",
+    quantity_product: "2"
+  }
 ];
 
-const Item = ({ title }) => (
+const Item = ({ item }) => (
   <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
+    <Text style={[styles.item_title, styles.row]}>{item.name_product}</Text>
+    <Text style={[styles.item_title, styles.row]}>{item.quantity_product}</Text>
+    <Text style={[styles.item_title, styles.row]}>R$ {item.price_product}</Text>
+    <Pressable
+      onPress={() => Alert.alert('Excluir da lista')}
+      style={styles.btn}>
+      <Text style={styles.btnText}>Deletar</Text>
+    </Pressable>
   </View>
 );
 
 
-function Sale ({navigation}){
+function Sale({ navigation, router }) {
 
   const renderItem = ({ item }) => (
     <Item title={item.title} />
   );
-    const [modalVisible, setModalVisible] = useState(false);
-    return (
-      <View style={styles.container}>
-        <Text>Realizar Uma Venda</Text>
-        <View>
-            <Button
-            title='Selecionar Produto'
-            onPress={() => {Alert.alert('Query list produto')}}
-            />
-            <Text>Camiseta Azul</Text>
-            <Text>Valor:</Text>
-            <TextInput placeholder='R$XX,XX'/>
-            <Button
-            title='Adicionar'
-            onPress={() => {Alert.alert('Query Add product_has_sale')}}
-            />
-        </View>
-        <View style={styles.viewFlatList}>
-            <FlatList
-            style={styles.list}
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-        />
-        </View>
-        
-        <View>
-        <Button
-          title='Selecionar Cliente'
-          onPress={() => {Alert.alert('Query list produto')}}
-        />
-        <Text>Willian Manaus</Text>
-        <Button
-          title='Realizar Venda'
-          onPress={() => {Alert.alert('Query list addSale')}}
-        />
-        </View>
-        <Modal 
-        animationType=' slide '
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text>Cadastrar Usuario</Text>
-              <View style={styles.clietName}>
-                <Text>Nome:</Text>
-                <TextInput style={styles.textinput}   placeholder='Nome do Salee'/>
-              </View>
-              <View style={styles.clietName}>
-                <Text>Telefone:</Text>
-                <TextInput style={styles.textinput}   placeholder='(XX) X XXXX-XXXX'/>
-              </View>
-              <Button
-              title='Salvar'
-              onPress={() => Alert.alert('Evento Salvar')}
-              />
-              <Pressable 
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text>Voltar</Text>
-              </Pressable>
-              
-            </View>
-          </View>
-        </Modal>
+  const [modalVisible, setModalVisible] = useState(false);
+  const [productList, setProductList] = useState([]);
 
-        <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-        >
-        <Text style={styles.textStyle}>Cadastrar</Text>
-        </Pressable>
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.containerTitle}>
+        <Text style={styles.titleText}>Realizar Uma Venda</Text>
       </View>
-    );
+      <View style={styles.productContainer}>
+        <Pressable
+          onPress={() => Alert.alert('pesquisa produto')}
+        >
+          <Text>Pesquisar Produto</Text>
+        </Pressable>
+
+        <View style={styles.productContainerRow}>
+          <Text> Nome do Produto: </Text>
+          <Text> ... </Text>
+        </View>
+
+        <View style={styles.productContainerRow}>
+          <Text> Quantidade: </Text>
+          <TextInput placeholder=' X ' />
+        </View>
+
+        <View style={styles.productContainerRow}>
+          <Text> Preço: R$ </Text>
+          <TextInput placeholder=' XXX,XX ' />
+        </View>
+
+
+      </View>
+
+
+
+      <View style={styles.productListContainer}>
+        <View style={[styles.item]}>
+
+          <Text style={[styles.item_title, styles.row]}>Produto</Text>
+          <Text style={[styles.item_title, styles.row]}>Quantidade</Text>
+          <Text style={[styles.item_title, styles.row]}>Preço</Text>
+          <Text style={[styles.item_title, styles.row]}>Excluir</Text>
+
+        </View>
+
+
+
+
+        <FlatList
+          data={DATA}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+
+      <View style={styles.clientContainer}>
+
+
+      </View>
+
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },viewFlatList:{
-        width: 200,
-        height:100,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    logo:{
-      width: 150,
-      height: 50,
-      padding: 5,
-      alignSelf: "center",
-    },
-    textinput:{
-      idth: 200,
-      height: 50,
-      backgroundColor: '#fff'
-    },centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 22
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: "white",
-      borderRadius: 20,
-      padding: 35,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5
-    },
-    button: {
-      borderRadius: 20,
-      padding: 10,
-      elevation: 2
-    },
-    buttonOpen: {
-      backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-      backgroundColor: "#2196F3",
-    },
-    textStyle: {
-      color: "white",
-      fontWeight: "bold",
-      textAlign: "center"
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: "center"
-    },
-    list:{
-        height :150,
-        width:100
-    }
-  });
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#87CEFA'
+  },
+  titleText: {
+    fontSize: 30
+  },
+  productContainer: {
+    flex: 1,
+    paddingTop: 50
+  },
+  productContainerRow: {
+    flexWrap: 'wrap',
+    flexDirection: 'row'
+  },
+  productListContainer:{
+    flex: 1
+  }, item: {
+    padding: 10,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    flexWrap: 'wrap'
+  },
+  item_title: {
+    fontSize: 14,
+  },
+  row: {
+    flex: 1,
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderRightWidth: 1
+  }, btn: {
+    flex: 1,
+    backgroundColor: '#87CEFA',
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    paddingEnd: 2,
+    borderRightWidth: 1,
+
+  }, btnText: {
+    fontSize: 20,
+    color: 'white',
+    alignSelf: 'center'
+  },
+});
 
 export default Sale;
