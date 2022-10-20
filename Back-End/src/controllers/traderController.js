@@ -70,7 +70,7 @@ const addTrader = (req, res) => {
         };
 
         const sqlQuery = 'INSERT INTO trader SET ?';
-
+        console.log(`sqlQuery: ${sqlQuery}`);
         database.query(sqlQuery, Trader, (err, row) => {
             if (err) throw err;
 
@@ -91,7 +91,7 @@ const deleteTrader = (req, res) => {
         };
 
         const sqlQuery = 'DELETE FROM trader WHERE id = ?';
-
+        console.log(`sqlQuery: ${sqlQuery}`);
         database.query(sqlQuery, req.body.id, (err, row) => {
             if (err) throw err;
 

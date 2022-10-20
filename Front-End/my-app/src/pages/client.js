@@ -82,10 +82,15 @@ function Client({ navigation, route }) {
 
 
   useEffect(() => {
-    api.get('client/list').then(({ data }) => {
-      setClientes(data);
-      console.log(data);
-    });
+
+    const subs = navigation.addListener('focus', () => {
+      api.post('client/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+        setClientes(data);
+        console.log(data);
+      });
+    })
+
+
   }, [])
 
 
@@ -98,7 +103,7 @@ function Client({ navigation, route }) {
         id: ID
       }
     }).then(({ data }) => {
-      Alert.alert('Produto Deletado com sucesso!')
+      navigation.navigate('UpdateAfterDelete', { trader_id: route.params.trader_id })
       console.log(data);
     });
   }

@@ -5,93 +5,17 @@ import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View,
 
 import api from '../../services/api'
 
-
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <Text style={[styles.title, textColor]}>{item.name_client}</Text>
+  </TouchableOpacity>
+);
 
 
 function Teste({ navigation, route }) {
 
-  const traderID = route.params?.trader_id;
-
-
-
-  function deleteProduto(ID) {
-    console.log(ID);
-    api.delete('product/delete', {
-      data: {
-        id: ID
-      }
-    }).then(({ data }) => {
-      Alert.alert('Produto Deletado com sucesso!')
-      console.log(data);
-    });
-  }
-  
-  function teste(teste){
-    Alert.alert('oi ' + teste.id);
-  }
-  
-  
-  
-  const Item = ({ item }) => (
-    <View style={[styles.item]}>
-  
-      <Text style={[styles.item_title, styles.row]}>{item.name_product}</Text>
-      <Text style={[styles.item_title, styles.row]}>         {item.quantity_product}</Text>
-      <Pressable
-        onPress={() => teste(item)}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Alterar</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {Alert.alert(
-          "Excluir Produto",
-          "Deseja excluir o produto?",
-          [
-            {
-              text: "Cancelar",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "Cancelar"
-            },
-            { text: "Sim", onPress: () => deleteProduto(item.id) }
-          ]
-        );}}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Excluir</Text>
-      </Pressable>
-  
-    </View>
-  
-  
-  );
-  
-  
-
-
-
-  //Substituir por Screen
-  const [modal2Visible, setModal2Visible] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [produtos, setProd] = useState([]);
-
-  //name_product, price_product, quantity_product, description_product, trader_id
-  const [nameProduct, setNameProduct] = useState('');
-  const [priceProduct, setPriceProduct] = useState('');
-  const [quantityProduct, setQuantityProduct] = useState('');
-  const [descriptionProduct, setDescriptionProduct] = useState('');
-
-  useEffect(() => {
-    api.get('product/list').then(({ data }) => {
-      setProd(data);
-      console.log(data);
-    });
-  }, [])
-  //VOLTAR LAYOUT ANTIGO!
-
-
-
-
-
   const [selectedId, setSelectedId] = useState(null);
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#00008B" : "#87CEFA";
     const color = item.id === selectedId ? 'white' : 'black';
@@ -106,66 +30,27 @@ function Teste({ navigation, route }) {
     );
   };
 
-  const [selectedProduct, setSelectedProduct] = useState('');
+  const [clientes, setClientes] = useState([]);
 
-
-
-
-
-  function salvarProduto() {
-    api.put('product/update', {
-      id: selectedId,
-      name_product: nameProduct,
-      price_product: priceProduct,
-      quantity_product: quantityProduct,
-      description_product: descriptionProduct,
-      trader_id: route.params?.trader_id
-    }).then(({ data }) => {
-      Alert.alert('Produto Atualizado com sucesso!')
+  useEffect(() => {
+    api.get('client/list').then(({ data }) => {
+      setClientes(data);
+      console.log(data);
     });
-  }
+  }, [])
 
-
-
-
-
-
-  function getProdutoId() {
-    console.log(selectedId);
-
-    api.post('product/getById',
-      {
-        id: selectedId
-      }).then(({ data }) => {
-        console.log(data);
-        setSelectedProduct(data);
-
-
-      })
-  }
-
-
-
-  //Flatlis !!!! Ordenar em ordem alfabetica e colocar dados reais!
-
-  console.log(selectedProduct);
 
   return (
     <View style={styles.container}>
-
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Produtos</Text>
+        <Text style={styles.titleText}>Escolha o Cliente</Text>
       </View>
-
 
       <View style={styles.viewList}>
 
-        <View style={[styles.item]}>
+        <View style={[styles.item, {backgroundColor:'#87CEFA'}]}>
 
-          <Text style={[styles.item_title, styles.row]}>Nome</Text>
-          <Text style={[styles.item_title, styles.row]}>Quantidade</Text>
-          <Text style={[styles.item_title, styles.row]}>Alterar</Text>
-          <Text style={[styles.item_title, styles.row]}>Excluir</Text>
+          <Text style={[styles.item_title, styles.row,{fontSize: 20}]}>Nome</Text>
 
         </View>
 
@@ -173,7 +58,7 @@ function Teste({ navigation, route }) {
 
 
         <FlatList
-          data={produtos.product}
+          data={clientes.clients}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           extraData={selectedId}
@@ -181,15 +66,16 @@ function Teste({ navigation, route }) {
 
       </View>
 
-
       <View style={styles.containerBtn}>
         <Pressable
-            onPress={() => navigation.navigate('AddProduct' )}
-            style={styles.addBtn}>
-              <Text style={{color : 'white', fontSize:20, alignSelf: 'center'}}>Adicionar</Text>
+          onPress={() => navigation.navigate('AddClient', { trader_id: route.params.trader_id })}
+          style={styles.addBtn}>
+          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Selecionar</Text>
         </Pressable>
       </View>
-     
+
+
+
     </View>
   );
 }
@@ -223,6 +109,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     paddingTop: 50,
+    fontSize: 20
 
   },
   titleText: {
@@ -246,7 +133,7 @@ const styles = StyleSheet.create({
     borderRightWidth: 1
   }, btn: {
     flex: 1,
-    backgroundColor: '#87CEFA',
+    backgroundColor: '#111',
     paddingHorizontal: 2,
     paddingVertical: 5,
     paddingEnd: 2,

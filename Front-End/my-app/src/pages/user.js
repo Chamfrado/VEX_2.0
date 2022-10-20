@@ -61,23 +61,24 @@ function User ({navigation, route}){
       <View style={styles.container}>
         
         
-        <View style={styles.titleview}>
-        <Text style={styles.title}>Dados do Usuario</Text>
-        </View>
+        <View style={styles.containerTitle}>
+                <Text style={styles.titleText}>Dados Do Usuario</Text>
+            </View>
 
+        <View style={styles.saleInfo}>
+                <View style={styles.product_textb}>
+                    <Text style={[styles.textmodal, {fontSize: 30}]}>Nome: {nameTrader} </Text>
+                </View>
+                <View style={styles.product_textb}>
+                    <Text style={[styles.textmodal, {fontSize: 30}]}>Telefone: {phoneTrader}</Text>
+                </View>
+                <View style={styles.product_textb}>
+                    <Text style={[styles.textmodal, {fontSize: 30}]}>Email: {emailTrader}</Text>
+                </View>
+         </View>
 
-        <View style={styles.dataView} >
-            <Text style={styles.menutext} >Nome: {nameTrader} </Text>
-            <Text style={styles.menutext} >Telefone: {phoneTrader} </Text>
-            <Text style={styles.menutext} >Email: {emailTrader}</Text>
-        </View>
         
-        <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-        >
-        <Text style={styles.textStyle}>Alterar Dados</Text>
-        </Pressable>
+        
         
         <Modal 
         animationType=' slide '
@@ -128,91 +129,86 @@ function User ({navigation, route}){
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#87CEFA',
-      alignItems: 'center',
-      justifyContent: 'space-evenly',
-    },
-    logo:{
-      width: 150,
-      height: 50,
-      padding: 5,
-      alignSelf: "center",
-    },
-    textinput:{
-      borderWidth: 2,
-      alignSelf:'stretch',
-      backgroundColor: '#fff',
-      textAlign: 'center'
-    },centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      marginTop: 22
-    },
-    modalView: {
-      margin: 20,
-      backgroundColor: "white",
-      borderRadius: 20,
-      padding: 35,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5
-    },
-    button: {
-      borderRadius: 20,
-      margin: 10,
-      elevation: 2
-    },
-    buttonOpen: {
-      backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-      backgroundColor: "#2196F3",
-    },
-    textStyle: {
-      color: "white",
-      fontWeight: "bold",
-      textAlign: "center"
-    },
-    modalText: {
-      marginBottom: 15,
-      textAlign: "center"
-    },
-    list:{
-        height :150,
-        width:100
-    },senha:{
-      width: 150,
-      height:80
-    },
-    tituloAlterarSenha:{
-      paddingBottom: 30,
-      fontSize:20
-    },
-    dataView:{
-      backgroundColor: 'white',
-      alignItems: "stretch",
-      justifyContent: "space-evenly",
-    },
-    titleview:{
-      height: 100,
-      alignItems: 'stretch'
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    backgroundColor: '#87CEFA'
 
-    },
-    title:{
-      fontSize: 32
-    },
-    menutext:{
-      fontSize: 29
-    }
-  });
+  },
+  containerTitle: {
+  },
+  viewList: {
+    height: 400,
+    backgroundColor: 'white',
+    alignSelf: 'stretch',
+    borderWidth: 1,
+
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  title: {
+    flex: 1,
+    paddingTop: 50,
+    fontSize: 20
+
+  },
+  titleText: {
+    fontSize: 30
+  }, scrollView: {
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+  }, item: {
+    padding: 10,
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    flexWrap: 'wrap'
+  },
+  item_title: {
+    fontSize: 15,
+  },
+  row: {
+    flex: 1,
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    borderRightWidth: 1
+  }, btn: {
+    flex: 1,
+    backgroundColor: '#111',
+    paddingHorizontal: 2,
+    paddingVertical: 5,
+    paddingEnd: 2,
+    borderRightWidth: 1,
+
+  }, btnText: {
+    fontSize: 20,
+    color: 'white',
+    alignSelf: 'center'
+  },
+  addBtn: {
+    alignSelf: 'stretch',
+    backgroundColor: '#111',
+    borderTopLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    marginLeft: 20,
+    marginRight: 20
+  },
+  containerBtn: {
+    alignSelf: 'stretch',
+    marginLeft: 100,
+    marginRight: 100,
+
+  }
+});
+
 
 export default User;

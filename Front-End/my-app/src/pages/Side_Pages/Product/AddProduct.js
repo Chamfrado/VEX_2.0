@@ -21,7 +21,7 @@ function AddProduct({ navigation, route }) {
         description_product: descriptionProduct,
         trader_id: route.params?.trader_id,
       }).then(({ data }) => {
-        Alert.alert('Produto adicionado com sucesso!');
+        navigation.goBack();
 
       })
   }
@@ -33,6 +33,8 @@ function AddProduct({ navigation, route }) {
   const [priceProduct, setPriceProduct] = useState('');
   const [quantityProduct, setQuantityProduct] = useState('');
   const [descriptionProduct, setDescriptionProduct] = useState('');
+
+
 
   
   return (

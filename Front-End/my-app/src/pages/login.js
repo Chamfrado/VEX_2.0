@@ -15,12 +15,8 @@ function Login ({navigation}){
     const [password, setPassword] = useState('');
 
 function autentication(){
-        const jsonBody = JSON.stringify({
-          
-            phone_trader: username,
-            pass_trader: password  
-        })
-        api.post('trader/autentic',{phone_trader: username, pass_trader: password  }).then( ({data}) => {
+        if(username !== '' && password !== ''){
+          api.post('trader/autentic',{phone_trader: username, pass_trader: password  }).then( ({data}) => {
             console.log(data);
             if(data === 'recusado'){
               Alert.alert('Telefone ou senha errado');
@@ -30,12 +26,20 @@ function autentication(){
             }
 
          })
-         
-        
-        
-
+        }else if(username === ''){
+          Alert.alert('Preencha o numero de telefone.')
+        }else if(password === ''){
+          Alert.alert('Entre com sua senha')
+        }
   }
-
+  function pickDate(){
+    var date = new Date().getDate();
+  var month = new Date().getMonth() + 1;
+  var year = new Date().getFullYear();
+ var hour = new Date().toLocaleTimeString();
+  
+  return date + '-' + month + '-' + year + ' ' + hour;
+}
 
     return (
       <View style={styles.container}>
@@ -67,11 +71,7 @@ function autentication(){
         </Pressable>
         </View>
         
-        <Pressable
-                onPress={() => navigation.navigate('Teste' )}
-              >
-                <Text>TESTE</Text>
-        </Pressable>
+        
        
         <StatusBar style="auto" />
       </View>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
 
     },btn: {
       alignSelf: 'stretch',
-      backgroundColor: '#0000cd',
+      backgroundColor: '#111',
       borderTopLeftRadius: 10,
       borderBottomEndRadius: 10,
       borderTopRightRadius: 10,

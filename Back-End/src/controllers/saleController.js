@@ -5,7 +5,7 @@ const Sale = require('../models/sale')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, date_sale DATE, status_sale VARCHAR(50), trader_id INTEGER, client_id INTEGER, purchase_in_installments VARCHAR(50), payment_control VARCHAR(50), total_sale FLOAT ,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id), FOREIGN KEY (client_id) REFERENCES client(id))';
+    const sqlQuery = 'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, date_sale DATE, status_sale VARCHAR(50), trader_id INTEGER, client_id INTEGER, purchase_in_installments VARCHAR(50), payment_control VARCHAR(50), total_sale FLOAT ,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id), FOREIGN KEY (client_id) REFERENCES client(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -17,7 +17,7 @@ const initDatabase = (req, res) => {
 
 //List All Sale
 const listAllSales = (req, res) => {
-    const sqlQuery = 'select sale.*,product.name_product, product_has_sale.quantity_sale_product, product_has_sale.price_product_sale  from db_vex.sale LEFT JOIN db_vex.product_has_sale  ON sale.id = product_has_sale.sale_id LEFT JOIN db_vex.product ON product_has_sale.product_id = product.id ORDER BY sale.id DESC';
+    const sqlQuery = 'SELECT S.id,C.name_client, S.date_sale, SUM(PHS.quantity_sale_product * PHS.price_product_sale) AS total FROM sale S INNER JOIN client C ON C.id = S.client_id INNER JOIN product_has_sale PHS ON S.id = PHS.sale_id WHERE s.trader_id = '+ req.body.trader_id + ' GROUP BY S.id ORDER BY S.id desc';
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
@@ -30,7 +30,7 @@ const listAllSales = (req, res) => {
 
 //Get by Id
 const getSaleById = (req, res) => {
-    
+
     const errors = validationResult(req);
 
     if (errors.array().length > 0) {
@@ -70,12 +70,15 @@ const addSale = (req, res) => {
 
         };
 
-        const sqlQuery = 'INSERT INTO sale SET ?';
+        const sqlQuery = 'INSERT INTO sale set ?'
 
+        console.log(`sqlQuery: ${sqlQuery}`);
         database.query(sqlQuery, Sale, (err, row) => {
             if (err) throw err;
 
-            res.send('Sale add successfully!');
+
+            console.log('==============  ' + row.insertId);
+            res.json({ 'id': row.insertId });
         });
     }
 };
@@ -110,7 +113,7 @@ const updateSale = (req, res) => {
         res.send(errors.array());
     } else {
         const Sale = {
-            
+
             date_sale: req.body.date_sale,
             status_sale: req.body.status_sale,
             purchase_in_installments: req.body.purchase_in_installments,
@@ -118,7 +121,7 @@ const updateSale = (req, res) => {
             total_sale: req.body.total_sale
         };
 
-        const sqlQuery = 'UPDATE sale SET ? WHERE id = '+ req.body.id;
+        const sqlQuery = 'UPDATE sale SET ? WHERE id = ' + req.body.id;
 
         database.query(sqlQuery, Sale, (err, row) => {
             if (err) throw err;

@@ -17,13 +17,20 @@ const initDatabase = (req, res) => {
 
 //List All Sale
 const listAllProductHasSales = (req, res) => {
-    const sqlQuery = 'SELECT * FROM product_has_sale';
+    
+    const errors = validationResult(req);
+
+    if (errors.array().length > 0) {
+        res.send(errors.array());
+    }
+
+    const sqlQuery = 'SELECT p.name_product, phs.price_product_sale, phs.quantity_sale_product, SUM(phs.quantity_sale_product * phs.price_product_sale) AS parcial_value FROM product_has_sale phs INNER JOIN product p ON p.id = phs.product_id Where phs.sale_id = '+ req.body.sale_id +' group by phs.product_id';
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
     database.query(sqlQuery, (err, result) => {
         if (err) throw err;
-
+        console.log(result);
         res.json({ 'productHasSale': result });
     });
 };
@@ -44,11 +51,11 @@ const addProductHasSale = (req, res) => {
         };
 
         const sqlQuery = 'INSERT INTO product_has_sale SET ?';
-
+        console.log(`sqlQuery: ${sqlQuery}`);
         database.query(sqlQuery, ProductHasSale, (err, row) => {
             if (err) throw err;
-
-            res.send('ProductHasSale add successfully!');
+            
+            res.json({ 'id': row.insertId  });
         });
     }
 };

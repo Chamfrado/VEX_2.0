@@ -26,7 +26,7 @@ routes.post('/subscribe',
 //Client Routes------------------------------------------------------------------------------
 routes.get('/client/init', clientController.initDatabase);
 
-routes.get('/client/list', clientController.listAllClients);
+routes.post('/client/list', clientController.listAllClients);
 
 routes.post('/client/getById',body('id').not().escape() ,clientController.getClientById);
 
@@ -53,7 +53,7 @@ routes.delete('/client/delete',
 //Product Routes ------------------------------------------------------------------------------
 routes.get('/product/init', productController.initDatabase);
 
-routes.get('/product/list', productController.listAllProducts);
+routes.post('/product/list', productController.listAllProducts);
 
 routes.post('/product/getById',body('id').not().escape() ,productController.getProductById);
 
@@ -84,7 +84,7 @@ routes.delete('/product/delete',
 //Sale Controller------------------------------------------------------------------------------
 routes.get('/sale/init', saleController.initDatabase);
 
-routes.get('/sale/list', saleController.listAllSales);
+routes.post('/sale/list', saleController.listAllSales);
 
 routes.get('/sale/getById',body('id').not().escape() ,saleController.getSaleById);
 
@@ -151,7 +151,10 @@ body('pass_trader').not().isEmpty().escape(),
 traderController.autenticTrader);
 
 //Products of a Sale
-routes.get('/sale/products/all',productHasSaleController.listAllProductHasSales );
+routes.post('/sale/products',
+body('sale_id').not().isEmpty().escape(),
+
+productHasSaleController.listAllProductHasSales );
 
 routes.get('/sale/products/init', productHasSaleController.initDatabase);
 

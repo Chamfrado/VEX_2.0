@@ -15,7 +15,10 @@ import AddProduct from './src/pages/Side_Pages/Product/AddProduct';
 import UpdateProduct from './src/pages/Side_Pages/Product/UpdateProduct';
 import AddClient from './src/pages/Side_Pages/Client/AddClient';
 import UpdateClient from './src/pages/Side_Pages/Client/UpdateClient';
-
+import SelectClient from './src/pages/Side_Pages/Sale/SelectClient';
+import SelectProduct from './src/pages/Side_Pages/Sale/SelectProduct'; 
+import HistoricDetail from './src/pages/Side_Pages/Historic/detail';
+import UpdateAfterDelete from './src/pages/Side_Pages/Product/updateAfterDelete';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -34,6 +37,10 @@ export default function App() {
             <Stack.Screen name='UpdateProduct' component={UpdateProduct} options={{title: 'Cancelar'}}/>
             <Stack.Screen name='AddClient' component={AddClient} options={{title: 'Cancelar'}}/>
             <Stack.Screen name='UpdateClient' component={UpdateClient} options={{title: 'Cancelar'}}/>
+            <Stack.Screen name='SelectClient' component={SelectClient} options={{title: 'Cancelar'}}/>
+            <Stack.Screen name='SelectProduct' component={SelectProduct} options={{title: 'Cancelar'}}/>
+            <Stack.Screen name='HistoricDetal' component={HistoricDetail} options={{title: 'voltar'}}/>
+            <Stack.Screen name='UpdateAfterDelete' component={UpdateAfterDelete} options={{title: 'voltar'}}/>
         </Stack.Navigator>
       </NavigationContainer>
   );

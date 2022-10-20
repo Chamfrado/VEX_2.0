@@ -44,7 +44,7 @@ function Home({ navigation, route }) {
 
         <Pressable
           style={styles.btn}
-          onPress={() => navigation.navigate('Sale', { trader_id: route.params.trader_id })}>
+          onPress={() => navigation.navigate('SelectClient', { trader_id: route.params.trader_id })}>
           <Text style={styles.btnText}>Vendas</Text>
         </Pressable>
 
@@ -65,7 +65,7 @@ function Home({ navigation, route }) {
         <Pressable
           style={styles.btn}
           onPress={() => navigation.navigate('User', { trader_id: route.params.trader_id })}>
-          <Text style={styles.btnText}>Usuario</Text>
+          <Text style={styles.btnText}>Usuário</Text>
         </Pressable>
 
       </View>
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     alignSelf: 'stretch',
-    backgroundColor: '#0000cd',
+    backgroundColor: '#111',
     borderTopLeftRadius: 10,
     borderBottomEndRadius: 10,
     borderTopRightRadius: 10,

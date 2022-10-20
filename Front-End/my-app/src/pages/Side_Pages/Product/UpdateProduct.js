@@ -21,6 +21,7 @@ function UpdateProduct({ navigation, route }) {
       trader_id: route.params?.trader_id
     }).then(({ data }) => {
       Alert.alert('Produto Atualizado com sucesso!')
+      navigation.goBack();
     });
   }
 
@@ -43,7 +44,7 @@ function UpdateProduct({ navigation, route }) {
       {
         id: route.params?.product_id
       }).then(({ data }) => {
-       
+        console.log(data);
         setNameProduct(data.product[0].name_product);
         setDescriptionProduct(data.product[0].description_product);
         setPriceProduct(data.product[0].price_product);

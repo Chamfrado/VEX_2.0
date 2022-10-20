@@ -3,56 +3,21 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
 
-import api from '../../services/api';
+import api from '../../../../services/api';
 
 
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+    <Text style={[styles.title, textColor]}>{item.name_client}</Text>
+  </TouchableOpacity>
+);
 
-
-
-function Historic({ navigation, route }) {
-
-
-  const [saleList, setSaleList] = useState([]);
-  const [clientes, setClientes] = useState([]);
-
-  useEffect(() => {
-    api.get('sale/list').then(({ data }) => {
-      console.log(data);
-      setSaleList(data);
-      console.log(saleList);
-    });
-  }, [])
-
-  function date(DATE){
-    var dateOnly = DATE.split('T03');
-    var orderDate = dateOnly[0].split('-');
-    return(orderDate[2] +'/'+ orderDate[1] +'/'+ orderDate[0]);
-  }
-
-
-  const Item = ({ item }) => (
-    <View style={[styles.item]}>
-
-      <Text style={[styles.item_title, styles.row]}>{item.name_client}</Text>
-      <Text style={[styles.item_title, styles.row]}>{date(item.date_sale)}</Text>
-      <Text style={[styles.item_title, styles.row]}>R$ {item.total}</Text>
-      
-      <Pressable
-        onPress={() => {  navigation.navigate('HistoricDetal', { trader_id: route.params.trader_id, sale_id : item.id, name_client : item.name_client, date_sale : date(item.date_sale), total: item.total }) }}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Detalhes</Text>
-      </Pressable>
-
-    </View>
-
-
-  );
-
-
+function SelectClient({ navigation, route }) {
 
   const [selectedId, setSelectedId] = useState(null);
+
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#00008B" : "#87CEFA";
+    const backgroundColor = item.id === selectedId ? "#00008B" : "#FFFFFF";
     const color = item.id === selectedId ? 'white' : 'black';
 
     return (
@@ -65,33 +30,27 @@ function Historic({ navigation, route }) {
     );
   };
 
-
+  const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
-    api.post('sale/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+    api.post('client/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
       setClientes(data);
       console.log(data);
     });
   }, [])
 
 
-
-
-
   return (
     <View style={styles.container}>
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Histórico de Vendas</Text>
+        <Text style={styles.titleText}>Escolha o Cliente</Text>
       </View>
 
       <View style={styles.viewList}>
 
-        <View style={[styles.item]}>
+        <View style={[styles.item, {backgroundColor:'#87CEFA'}]}>
 
-          <Text style={[styles.item_title, styles.row]}>Nome</Text>
-          <Text style={[styles.item_title, styles.row]}>Data</Text>
-          <Text style={[styles.item_title, styles.row]}>Valor Total</Text>
-          <Text style={[styles.item_title, styles.row]}></Text>
+          <Text style={[styles.item_title, styles.row,{fontSize: 20}]}>Nome</Text>
 
         </View>
 
@@ -99,19 +58,27 @@ function Historic({ navigation, route }) {
 
 
         <FlatList
-          data={clientes.sale}
+          data={clientes.clients}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           extraData={selectedId}
         />
 
       </View>
+
+      <View style={styles.containerBtn}>
+        <Pressable
+          onPress={() => navigation.navigate('SelectProduct', { trader_id: route.params.trader_id, client_id : selectedId})}
+          style={styles.addBtn}>
+          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Selecionar</Text>
+        </Pressable>
+      </View>
+
+
+
     </View>
   );
 }
-
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -177,22 +144,24 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
-  addBtn: {
+  addBtn:{
     alignSelf: 'stretch',
-    backgroundColor: '#111',
-    borderTopLeftRadius: 10,
-    borderBottomEndRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    marginLeft: 20,
-    marginRight: 20
+      backgroundColor: '#111',
+      borderTopLeftRadius: 10,
+      borderBottomEndRadius: 10,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      marginLeft:20,
+      marginRight:20
   },
   containerBtn: {
-    alignSelf: 'stretch',
+    alignSelf:'stretch',
     marginLeft: 100,
     marginRight: 100,
 
   }
 });
 
-export default Historic;
+
+
+export default SelectClient;

@@ -16,7 +16,7 @@ function UpdateClient({ navigation, route }) {
     phone_client: phoneClient,
     trader_id: route.params?.trader_id
   }).then(({ data }) => {
-    Alert.alert('Produto Atualizado com sucesso!')
+    Alert.alert('Cliente Atualizado com sucesso!')
   });
 }
 
@@ -67,7 +67,7 @@ function UpdateClient({ navigation, route }) {
           <Text style={styles.textmodal}>Telefone:</Text>
           <TextInput style={styles.textinput}
             placeholder='(XX) X XXXX-XXXX'
-            onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} >{phoneClient}</TextInput>
+            onChangeText={newpriceProduct => setPhoneClient(newpriceProduct)} >{phoneClient}</TextInput>
         </View>
         
 

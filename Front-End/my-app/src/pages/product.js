@@ -1,7 +1,7 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, RefreshControl, TextInput } from 'react-native';
 
 import api from '../../services/api'
 
@@ -22,64 +22,80 @@ function Product({ navigation, route }) {
         id: ID
       }
     }).then(({ data }) => {
-      Alert.alert('Produto Deletado com sucesso!')
-      console.log(data);
+      navigation.navigate('UpdateAfterDelete', { trader_id: route.params.trader_id })
     });
   }
-  
-  function teste(teste){
+
+  function teste(teste) {
     Alert.alert('oi ' + teste.id);
   }
-  
-  
-  
+
+
+
   const Item = ({ item }) => (
     <View style={[styles.item]}>
-  
+
       <Text style={[styles.item_title, styles.row]}>{item.name_product}</Text>
       <Text style={[styles.item_title, styles.row]}>         {item.quantity_product}</Text>
       <Pressable
-        onPress={() => navigation.navigate('UpdateProduct', {trader_id :  route.params.trader_id, product_id : item.id} )}
+        onPress={() => navigation.navigate('UpdateProduct', { trader_id: route.params.trader_id, product_id: item.id })}
         style={styles.btn}>
         <Text style={styles.btnText}>Alterar</Text>
       </Pressable>
       <Pressable
-        onPress={() => {Alert.alert(
-          "Excluir Produto",
-          "Deseja excluir o produto?",
-          [
-            {
-              text: "Cancelar",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "Cancelar"
-            },
-            { text: "Sim", onPress: () => deleteProduto(item.id) }
-          ]
-        );}}
+        onPress={() => {
+          Alert.alert(
+            "Excluir Produto",
+            "Deseja excluir o produto?",
+            [
+              {
+                text: "Cancelar",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "Cancelar"
+              },
+              {
+                text: "Sim", onPress: () => {
+                  deleteProduto(item.id);
+                  
+                }
+              }
+            ]
+          );
+        }}
         style={styles.btn}>
         <Text style={styles.btnText}>Excluir</Text>
       </Pressable>
-  
+
     </View>
-  
-  
+
+
   );
-  
-  
+
+
 
 
 
   //Substituir por Screen
   const [produtos, setProd] = useState([]);
 
-  useEffect(() => {
-    api.get('product/list').then(({ data }) => {
-      setProd(data);
-      console.log(data);
-    });
-  }, [])
-  //VOLTAR LAYOUT ANTIGO!
+  const [refreshKey, setRefreshKey] = useState(0);
 
+  useEffect(() => {
+    const subs = navigation.addListener('focus', () => {
+      api.post('product/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+        setProd(data);
+        console.log(data);
+      });
+    })
+  }, [refreshKey])
+
+
+  useEffect(() => {
+
+
+  }, [refreshKey])
+
+  //VOLTAR LAYOUT ANTIGO!
 
 
 
@@ -148,7 +164,8 @@ function Product({ navigation, route }) {
           data={produtos.product}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-          extraData={selectedId}
+          extraData={refreshKey}
+
         />
 
       </View>
@@ -156,12 +173,12 @@ function Product({ navigation, route }) {
 
       <View style={styles.containerBtn}>
         <Pressable
-            onPress={() => navigation.navigate('AddProduct', {trader_id :  route.params.trader_id} )}
-            style={styles.addBtn}>
-              <Text style={{color : 'white', fontSize:20, alignSelf: 'center'}}>Adicionar</Text>
+          onPress={() => navigation.navigate('AddProduct', { trader_id: route.params.trader_id })}
+          style={styles.addBtn}>
+          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
         </Pressable>
       </View>
-     
+
     </View>
   );
 }
@@ -229,18 +246,18 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
-  addBtn:{
+  addBtn: {
     alignSelf: 'stretch',
-      backgroundColor: '#111',
-      borderTopLeftRadius: 10,
-      borderBottomEndRadius: 10,
-      borderTopRightRadius: 10,
-      borderBottomLeftRadius: 10,
-      marginLeft:20,
-      marginRight:20
+    backgroundColor: '#111',
+    borderTopLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    marginLeft: 20,
+    marginRight: 20
   },
   containerBtn: {
-    alignSelf:'stretch',
+    alignSelf: 'stretch',
     marginLeft: 100,
     marginRight: 100,
 

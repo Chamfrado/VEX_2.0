@@ -1,7 +1,7 @@
 
 
 
-const { validationResult } = require('express-validator');
+const { validationResult, body } = require('express-validator');
 const database = require('../database/db');
 
 const Client = require('../models/client')
@@ -20,7 +20,7 @@ const initDatabase = (req, res) => {
 
 //List All Client
 const listAllClients = (req, res) => {
-    const sqlQuery = 'SELECT * FROM client';
+    const sqlQuery = 'SELECT * FROM client where trader_id = '+ req.body.trader_id +' ORDER BY name_client asc';
 
     console.log(`sqlQuery: ${sqlQuery}`);
 
