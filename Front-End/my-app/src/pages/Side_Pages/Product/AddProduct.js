@@ -1,8 +1,9 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, View, Pressable, Alert, TextInput } from 'react-native';
 
+import { Button, Icon, Card, Input, Layout, Modal, List, ListItem, Divider, Text } from '@ui-kitten/components';
 import api from '../../../../services/api';
 
 
@@ -30,57 +31,61 @@ function AddProduct({ navigation, route }) {
 
   //name_product, price_product, quantity_product, description_product, trader_id
   const [nameProduct, setNameProduct] = useState('');
-  const [priceProduct, setPriceProduct] = useState('');
+  const [priceProduct, setPriceProduct] = useState('15');
   const [quantityProduct, setQuantityProduct] = useState('');
-  const [descriptionProduct, setDescriptionProduct] = useState('');
+  const [descriptionProduct, setDescriptionProduct] = useState('a');
 
 
 
   
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
 
-      <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Adicionar Produto</Text>
-      </View>
-
-      <View style={styles.containerInput}>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Nome:</Text>
-          <TextInput style={styles.textinput}
-            onChangeText={newnameProduct => setNameProduct(newnameProduct)}
-            placeholder='Nome do Produto' />
-        </View>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Preço:</Text>
-          <TextInput style={styles.textinput}
-            placeholder='R$000,00'
-            onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} />
-        </View>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Quantidade:</Text>
-          <TextInput style={styles.textinput}
-            placeholder='X'
-            onChangeText={newquantiryProduct => setQuantityProduct(newquantiryProduct)} />
-        </View>
-        <View style={styles.product_desc}>
-          <Text>Descrição:</Text>
-          <TextInput style={styles.textinput}
-            placeholder='Insira aqui a descrição do produto'
-            onChangeText={newdescriptionProduct => setDescriptionProduct(newdescriptionProduct)} />
-        </View>
-
-      </View>
-
-      <View style={styles.containerBtn}>
-        <Pressable
-          onPress={() => adicionarProduct()}
-          style={styles.addBtn}>
-          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
-        </Pressable>
-      </View>
-
+    <View style={styles.containerTitle}>
+      <Text style={styles.titleText} category='h1'>Adicionar Cliente</Text>
     </View>
+
+    <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>
+      <Text style={{ paddingBottom: 30}} category='h3' >Nome do Produto</Text>
+
+      <View style={styles.inputCont}>
+        <Input
+          placeholder='Insira aqui o nome'
+          onChangeText={newnameProduct => setNameProduct(newnameProduct)} />
+      </View>
+    </View>
+
+
+
+    <View style={[{ paddingTop: 30, paddingBottom: 70 }]}>
+      <Text style={{ paddingBottom: 30}} category='h3' >Quantidade</Text>
+
+      <View style={styles.inputCont}>
+        <Input
+          placeholder='insira a Quantidade'
+          onChangeText={newQuantityProduct => setQuantityProduct(newQuantityProduct)} />
+      </View>
+    </View>
+
+
+
+
+
+
+
+
+
+    <View style={styles.containerBtn}>
+      
+
+      <Button
+      size='giant'
+      onPress={() => adicionarProduct() }>
+      Adicionar
+    </Button>
+    </View>
+
+  </Layout>
   );
 }
 
@@ -88,8 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    justifyContent: 'space-evenly'
 
   },
 

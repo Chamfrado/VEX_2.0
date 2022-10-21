@@ -1,10 +1,11 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, View, Pressable, Alert } from 'react-native';
+
+import { Button, Icon, Card, Modal,Layout ,List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../../../services/api';
-
 
 
 function HistoricDetail({ navigation, route }) {
@@ -12,17 +13,11 @@ function HistoricDetail({ navigation, route }) {
 
 
     const Item = ({ item }) => (
-        <View style={[styles.item]}>
-      
-          <Text style={[styles.item_title, styles.row]}>{item.name_product}</Text>
-          <Text style={[styles.item_title, styles.row]}>     R$ {item.price_product_sale}</Text>
-          <Text style={[styles.item_title, styles.row]}>      {item.quantity_sale_product}</Text>
-          <Text style={[styles.item_title, styles.row]}>      {item.parcial_value}</Text>
-          
-      
-        </View>
-      
-      
+
+      <ListItem
+      title={item.name_product}
+      key={item.id}
+      description={item.quantity_sale_product+' vendido(s) a no valor de R$ ' + item.price_product_sale + ' totalizando em R$ '+ item.parcial_value}/>
       );
 
 
@@ -67,48 +62,44 @@ function HistoricDetail({ navigation, route }) {
 
       
     return (
-        <View style={styles.container}>
+        <Layout style={styles.container}>
             <View style={styles.containerTitle}>
                 <Text style={styles.titleText}>Venda Nº {saleId}</Text>
             </View>
 
             <View style={styles.saleInfo}>
                 <View style={styles.product_textb}>
-                    <Text style={[styles.textmodal, {fontSize: 30}]}>Cliente: {clientName}</Text>
+                    <Text style={[styles.textmodal]} category='h3'>Cliente: {clientName}</Text>
                 </View>
                 <View style={styles.product_textb}>
-                    <Text style={[styles.textmodal, {fontSize: 30}]}>Data da Venda: {date}</Text>
+                    <Text style={[styles.textmodal]} category='h3'>Data da Venda: {date}</Text>
                 </View>
                 <View style={styles.product_textb}>
-                    <Text style={[styles.textmodal, {fontSize: 30}]}>Total da Venda: R$ {total}</Text>
+                    <Text style={[styles.textmodal]} category='h3' >Total da Venda: R$ {total}</Text>
                 </View>
             </View>
 
 
             <View style={styles.viewList}>
 
-        <View style={[styles.item]}>
 
-          <Text style={[styles.item_title, styles.row]}>Nome</Text>
-          <Text style={[styles.item_title, styles.row]}>Preço</Text>
-          <Text style={[styles.item_title, styles.row]}>Quantidade</Text>
-          <Text style={[styles.item_title, styles.row]}>Total Item</Text>
+        <Text category='h4' style={[{ alignSelf: 'center', padding: 20 }]} >Lista de Produtos da Venda</Text>
 
-        </View>
-
-
-
-
-        <FlatList
+        <List
+          style={{ height: 300 }}
           data={produtos.productHasSale}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
+          ItemSeparatorComponent={Divider}
+          extraData={selectedId}
         />
+
+
 
       </View>
 
 
-        </View>
+        </Layout>
     );
 }
 
@@ -116,8 +107,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'space-evenly',
-      backgroundColor: '#87CEFA'
+      justifyContent: 'space-evenly'
   
     },
     containerTitle: {

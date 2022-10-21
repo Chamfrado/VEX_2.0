@@ -1,11 +1,15 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, RefreshControl, TextInput } from 'react-native';
+import { StyleSheet, View, Pressable, Alert } from 'react-native';
+
+import { Button, Icon, Card, Modal,Layout ,List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../services/api'
 
-
+const ProductIcon = (props) => (
+  <Icon {...props} name='cube-outline' />
+);
 
 
 
@@ -13,7 +17,7 @@ function Product({ navigation, route }) {
 
   const traderID = route.params?.trader_id;
 
-
+  const [selectProduct, setSelectProduct] = useState(null);
 
   function deleteProduto(ID) {
     console.log(ID);
@@ -22,6 +26,7 @@ function Product({ navigation, route }) {
         id: ID
       }
     }).then(({ data }) => {
+      setVisible(false)
       navigation.navigate('UpdateAfterDelete', { trader_id: route.params.trader_id })
     });
   }
@@ -33,41 +38,15 @@ function Product({ navigation, route }) {
 
 
   const Item = ({ item }) => (
-    <View style={[styles.item]}>
-
-      <Text style={[styles.item_title, styles.row]}>{item.name_product}</Text>
-      <Text style={[styles.item_title, styles.row]}>         {item.quantity_product}</Text>
-      <Pressable
-        onPress={() => navigation.navigate('UpdateProduct', { trader_id: route.params.trader_id, product_id: item.id })}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Alterar</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          Alert.alert(
-            "Excluir Produto",
-            "Deseja excluir o produto?",
-            [
-              {
-                text: "Cancelar",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "Cancelar"
-              },
-              {
-                text: "Sim", onPress: () => {
-                  deleteProduto(item.id);
-                  
-                }
-              }
-            ]
-          );
-        }}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Excluir</Text>
-      </Pressable>
-
-    </View>
-
+    <ListItem
+      title={item.name_product}
+      key={item.id}
+      onPress={() => {
+        setSelectProduct(item);
+        setVisible(true);
+      }}
+      description={'Quantidade: ' + item.quantity_product}
+      accessoryLeft={ProductIcon} />
 
   );
 
@@ -82,7 +61,7 @@ function Product({ navigation, route }) {
 
   useEffect(() => {
     const subs = navigation.addListener('focus', () => {
-      api.post('product/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+      api.post('product/list', { trader_id: route.params?.trader_id }).then(({ data }) => {
         setProd(data);
         console.log(data);
       });
@@ -116,7 +95,7 @@ function Product({ navigation, route }) {
   };
 
   const [selectedProduct, setSelectedProduct] = useState('');
-
+  const [visible, setVisible] = React.useState(false);
 
 
 
@@ -139,56 +118,84 @@ function Product({ navigation, route }) {
 
 
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
 
-      <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Produtos</Text>
-      </View>
-
-
-      <View style={styles.viewList}>
-
-        <View style={[styles.item]}>
-
-          <Text style={[styles.item_title, styles.row]}>Nome</Text>
-          <Text style={[styles.item_title, styles.row]}>Quantidade</Text>
-          <Text style={[styles.item_title, styles.row]}>Alterar</Text>
-          <Text style={[styles.item_title, styles.row]}>Excluir</Text>
-
-        </View>
-
-
-
-
-        <FlatList
-          data={produtos.product}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={refreshKey}
-
-        />
-
+      <View style={[styles.containerTitle, { alignItems: 'center', paddingBottom: 30, paddingTop: 10 }]}>
+        <Text style={styles.titleText} category='h1'>Produtos</Text>
       </View>
 
 
       <View style={styles.containerBtn}>
-        <Pressable
+        <Button
+          size='large'
           onPress={() => navigation.navigate('AddProduct', { trader_id: route.params.trader_id })}
-          style={styles.addBtn}>
-          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
-        </Pressable>
+        >
+          Adicionar Produto
+        </Button>
+
       </View>
 
-    </View>
+
+
+
+      <Text category='h2' style={[{alignSelf: 'center', padding: 20}]} >Lista de Produtos</Text>
+
+
+      <List
+        style={{ height: 300 }}
+        data={produtos.product}
+        ItemSeparatorComponent={Divider}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        extraData={refreshKey}
+      />
+
+
+
+      <Modal visible={visible}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisible(false)}>
+        <Card disabled={true}>
+          <Text category='h3' style={{ alignSelf: 'center' }}>Opções</Text>
+
+          <View style={[{ flexDirection: 'row', padding: 30 }]}>
+            <Button size='large' onPress={() => {
+              setVisible(false)
+              navigation.navigate('UpdateProduct', { trader_id: route.params.trader_id, product_id: selectProduct.id })
+            }} >Alterar</Button>
+            <Text>                      </Text>
+            <Button size='large'
+              onPress={() => {
+                Alert.alert(
+                  "Excluir Cliente",
+                  "Deseja excluir o client?",
+                  [
+                    {
+                      text: "Cancelar",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "Cancelar"
+                    },
+                    { text: "Sim", onPress: () => deleteProduto(selectProduct.id) }
+                  ]
+                );
+              }}>Deletar</Button>
+
+          </View>
+          <Button onPress={() => setVisible(false)}>
+            Cacelar
+          </Button>
+        </Card>
+
+      </Modal>
+
+
+    </Layout>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    flex: 1
 
   },
   containerTitle: {
@@ -260,6 +267,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginLeft: 100,
     marginRight: 100,
+    paddingTop: 20,
+    paddingBottom: 20
 
   }
 });

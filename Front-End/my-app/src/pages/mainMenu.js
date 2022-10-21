@@ -3,76 +3,99 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, Button, TextInput, Image, Text, View, Alert, Pressable } from 'react-native';
-import { Header } from '../components/header'
+import { StyleSheet,  TextInput, Image, View, Alert, TouchableHighlight  ,Pressable } from 'react-native';
+
+
+import { Button, Layout, useTheme, Text, Icon } from '@ui-kitten/components/';
+import { default as theme } from '../../theme/custom-theme.json';
+
+import api from '../../services/api';
+
+const ClientIcon = (props) => (
+  <Icon {...props} name='person-outline'/>
+);
+
+const ProductIcon = (props) => (
+  <Icon {...props} name='clipboard-outline'/>
+);
+
+const SaleIcon = (props) => (
+  <Icon {...props} name='shopping-bag-outline'/>
+);
+
+const HistoricIcon = (props) => (
+  <Icon {...props} name='list-outline'/>
+);
+
+const UserIcon = (props) => (
+  <Icon {...props} name='award-outline'/>
+);
+
 
 // import { Container } from './styles';
 
 function Home({ navigation, route }) {
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
 
 
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Suas opções:</Text>
+        <Text style={styles.text} category='h1'>Suas opções:</Text>
       </View>
 
       <View style={styles.containerBtn}>
 
+      <Button
+        size='giant'
+        accessoryLeft={ClientIcon}
+        onPress={() => navigation.navigate('Client', { trader_id: route.params.trader_id })}>
+        Clientes
+      </Button>
 
 
-        <Pressable
-          style={styles.btn}
-          onPress={() => navigation.navigate('Client', { trader_id: route.params.trader_id })}>
-          <Text style={styles.btnText}>Clientes</Text>
-        </Pressable>
 
-
-
-      </View>
-
-      <View style={styles.containerBtn}>
-
-        <Pressable
-          style={styles.btn}
-          onPress={() => navigation.navigate('Product', { trader_id: route.params.trader_id })}>
-          <Text style={styles.btnText}>Produtos</Text>
-        </Pressable>
-      </View>
-
-      <View style={styles.containerBtn}>
-
-        <Pressable
-          style={styles.btn}
-          onPress={() => navigation.navigate('SelectClient', { trader_id: route.params.trader_id })}>
-          <Text style={styles.btnText}>Vendas</Text>
-        </Pressable>
 
       </View>
 
       <View style={styles.containerBtn}>
 
-        <Pressable
-          style={styles.btn}
-          onPress={() => navigation.navigate('Historic', { trader_id: route.params.trader_id })}>
-          <Text style={styles.btnText}>Histórico</Text>
-        </Pressable>
-
+      <Button
+        size='giant'
+        accessoryLeft={ProductIcon}
+        onPress={() => navigation.navigate('Product', { trader_id: route.params.trader_id })}>
+        Produtos
+      </Button>
       </View>
 
       <View style={styles.containerBtn}>
 
-        <Pressable
-          style={styles.btn}
-          onPress={() => navigation.navigate('User', { trader_id: route.params.trader_id })}>
-          <Text style={styles.btnText}>Usuário</Text>
-        </Pressable>
+
+      <Button
+        size='giant'
+        accessoryLeft={SaleIcon}
+        onPress={() => navigation.navigate('SelectClient', { trader_id: route.params.trader_id })}>
+        Vendas
+      </Button>
+
 
       </View>
+
+      <View style={styles.containerBtn}>
+      <Button
+        size='giant'
+        accessoryLeft={HistoricIcon}
+        onPress={() => navigation.navigate('Historic', { trader_id: route.params.trader_id })}>
+        Histórico
+      </Button>
+
+        
+
+      </View>
+
       <View style={styles.containerBottom}>
-        <Text>VEX</Text>
+        <Text category='h5'>VEX</Text>
       </View>
-    </View>
+    </Layout>
 
 
 
@@ -83,8 +106,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    justifyContent: 'space-evenly'
 
 
 
@@ -93,9 +115,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 50,
 
-  },
-  titleText: {
-    fontSize: 30
   },
   containerBtn: {
     alignSelf: 'stretch',
@@ -119,10 +138,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 10
 
-  }, btnText: {
-    fontSize: 20,
-    color: 'white',
-    alignSelf: 'center'
   },
   containerBottom: {
     alignSelf: 'center',

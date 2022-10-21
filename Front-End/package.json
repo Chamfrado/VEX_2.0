@@ -2,6 +2,7 @@
   "dependencies": {
     "expo": "^46.0.14",
     "expo-cli": "^6.0.6",
-    "react-native-table-component": "^1.2.2"
+    "react-native-table-component": "^1.2.2",
+    "react-native-svg": "12.3.0"
   }
 }

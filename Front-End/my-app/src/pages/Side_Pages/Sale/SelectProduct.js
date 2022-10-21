@@ -1,7 +1,9 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, FlatList, View, Pressable, Alert, TextInput } from 'react-native';
+
+import { Button, Icon, Card, Input, Modal, Layout, List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../../../services/api';
 
@@ -16,14 +18,14 @@ function SelectProduct({ navigation, route }) {
 
 
 
-    function pickDate(){
+    function pickDate() {
         var date = new Date().getDate() + 1;
-      var month = new Date().getMonth() + 1;
-      var year = new Date().getFullYear();
-      var hour = new Date().toLocaleTimeString();
- 
-      
-      return year + '-' + month + '-' + date + ' ' + hour;
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+        var hour = new Date().toLocaleTimeString();
+
+
+        return year + '-' + month + '-' + date + ' ' + hour;
     }
 
     const [priceProduct, setPriceProduct] = useState('');
@@ -94,15 +96,15 @@ function SelectProduct({ navigation, route }) {
                 console.log(data.id);
                 productList.map((item) => {
                     api.post('/sale/products/add',
-                    {
-                        product_id : item.id,
-                        sale_id: data.id,
-                        quantity_sale_product: item.quantity_product,
-                       price_product_sale: item.price_product
-                        
-                     }).then(({ id }) => {
-                    console.log('produto adicionado!')
-                    })
+                        {
+                            product_id: item.id,
+                            sale_id: data.id,
+                            quantity_sale_product: item.quantity_product,
+                            price_product_sale: item.price_product
+
+                        }).then(({ id }) => {
+                            console.log('produto adicionado!')
+                        })
 
                 })
                 Alert.alert(
@@ -117,8 +119,8 @@ function SelectProduct({ navigation, route }) {
                         { text: "Sair", onPress: () => navigation.navigate('Home', { trader_id: route.params.trader_id }) }
                     ]
                 );
-              })
-              
+            })
+
 
     }
 
@@ -131,66 +133,89 @@ function SelectProduct({ navigation, route }) {
     }
 
     useEffect(() => {
-        api.post('product/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+        api.post('product/list', { trader_id: route.params?.trader_id }).then(({ data }) => {
             setProduct(data);
             console.log(data);
-          });
+        });
     }, [])
 
 
     return (
-        <View style={styles.container}>
+        <Layout style={styles.container}>
             <ScrollView>
-                <View style={styles.containerTitle}>
-                    <Text style={styles.titleText}>Finalizando Venda</Text>
-                </View>
+                <Card disabled='true'>
+                    <View style={styles.containerTitle}>
+                        <Text style={[{ paddingTop: 30, paddingBottom: 30 }]} category='h1'>Selecione o Produto</Text>
+                    </View>
 
-                <View style={styles.viewList}>
+                    <View style={styles.viewList}>
 
-                    <View style={[styles.item, { backgroundColor: '#87CEFA' }]}>
 
-                        <Text style={[styles.item_title, styles.row, { fontSize: 20 }]}>Nome</Text>
+
+
+                        <FlatList
+                            data={products.product}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id}
+                            extraData={selectedId}
+                            nestedScrollEnabled
+                        />
 
                     </View>
 
+                    <View style={[{ alignContent: 'center' }]}>
+
+                        <View style={styles.containerTitle}>
+                            <Text style={{ alignSelf: 'center', padding: 20 }} category='h1'>Adicionar Cliente</Text>
+                        </View>
+
+                        <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>
+                            <Text style={{ paddingBottom: 30 }} category='h3' >Preço do Produto</Text>
+
+                            <View style={styles.inputCont}>
+                                <Input
+                                    placeholder='Insira aqui o preço'
+                                    onChangeText={newprice => setPriceProduct(newprice)} />
+                            </View>
+                        </View>
 
 
 
-                    <FlatList
-                        data={products.product}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                        extraData={selectedId}
-                        nestedScrollEnabled
-                    />
+                        <View style={[{ paddingTop: 30, paddingBottom: 70 }]}>
+                            <Text style={{ paddingBottom: 30 }} category='h3' >Quantidade</Text>
 
-                </View>
+                            <View style={styles.inputCont}>
+                                <Input
+                                    placeholder='insira a Quantidade'
+                                    onChangeText={newQuantityProduct => setQuantityProduct(newQuantityProduct)} />
+                            </View>
+                        </View>
 
-                <View style={styles.containerBtn}>
 
-                    <View style={styles.product_textb}>
-                        <Text style={styles.textmodal}>Preço:</Text>
-                        <TextInput style={styles.textinput}
-                            placeholder='R$000,00'
-                            onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} />
+
+
+
+
+
+
+
+                        <View style={[{ alignSelf: 'center' }]}>
+
+
+                            <Button
+                                size='giant'
+                                onPress={() => addProductList(selectedProduct)}>
+                                Adicionar
+                            </Button>
+                        </View>
                     </View>
-                    <View style={styles.product_textb}>
-                        <Text style={styles.textmodal}>Quantidade:</Text>
-                        <TextInput style={styles.textinput}
-                            placeholder='X'
-                            onChangeText={newquantiryProduct => setQuantityProduct(newquantiryProduct)} />
-                    </View>
-                    <Pressable
-                        onPress={() => addProductList(selectedProduct)}
-                        style={styles.addBtn}>
-                        <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
-                    </Pressable>
-                </View>
+                </Card>
 
 
 
-                <View style={styles.containerTitle}>
-                    <Text style={{ fontSize: 30 }}>Lista De Produtos</Text>
+
+                <View style={{ alignSelf: 'center' }}>
+                    <Text style={[{ paddingTop: 30, paddingBottom: 30 }]} category='h1'>Lista de Produtos</Text>
                 </View>
 
                 <View style={styles.viewList}>
@@ -237,17 +262,17 @@ function SelectProduct({ navigation, route }) {
 
                 <View style={[styles.containerBtnF]}>
 
+                    <Button
+                        size='giant'
+                        onPress={() => finishSale()}>
+                        Finalizar
+                    </Button>
 
-                    <Pressable
-                        onPress={() => finishSale()}
-                        style={styles.fBtn}>
-                        <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Finalizar Venda</Text>
-                    </Pressable>
                 </View>
             </ScrollView>
 
 
-        </View>
+        </Layout>
     );
 }
 
@@ -255,8 +280,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        backgroundColor: '#87CEFA'
+        justifyContent: 'space-evenly'
 
     },
     containerTitle: {
@@ -351,7 +375,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch'
 
     },
-    fBtn:{
+    fBtn: {
         alignSelf: 'stretch',
         backgroundColor: '#111',
         borderTopLeftRadius: 10,
@@ -361,7 +385,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginRight: 10
     },
-    containerBtnF:{
+    containerBtnF: {
         alignSelf: 'stretch',
         marginLeft: 50,
         marginRight: 50,

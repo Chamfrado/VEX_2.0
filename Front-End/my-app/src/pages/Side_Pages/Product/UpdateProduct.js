@@ -1,7 +1,9 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, View, Pressable, Alert, TextInput } from 'react-native';
+
+import { Button, Icon, Card, Input, Layout, Modal, List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../../../services/api';
 
@@ -58,49 +60,55 @@ function UpdateProduct({ navigation, route }) {
 
 
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
+
+
 
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Atualizar Produto</Text>
+        <Text style={styles.titleText} category='h1'>Adicionar Cliente</Text>
       </View>
 
-      <View style={styles.containerInput}>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Nome:</Text>
-          <TextInput style={styles.textinput}
-            onChangeText={newnameProduct => setNameProduct(newnameProduct)}
-            placeholder='Nome do Produto'>{nameProduct}</TextInput> 
-        </View>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Preço:</Text>
-          <TextInput style={styles.textinput}
-            placeholder='R$000,00'
-            onChangeText={newpriceProduct => setPriceProduct(newpriceProduct)} >{priceProduct}</TextInput>
-        </View>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Quantidade:</Text>
-          <TextInput style={styles.textinput}
-            placeholder='X'
-            onChangeText={newquantiryProduct => setQuantityProduct(newquantiryProduct)}>{quantityProduct}</TextInput>
-        </View>
-        <View style={styles.product_desc}>
-          <Text>Descrição:</Text>
-          <TextInput style={styles.textinput}
-            placeholder='Insira aqui a descrição do produto'
-            onChangeText={newdescriptionProduct => setDescriptionProduct(newdescriptionProduct)} >{descriptionProduct}</TextInput>
-        </View>
+      <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>
+        <Text style={{ paddingBottom: 30 }} category='h3' >Nome do Produto</Text>
 
+        <View style={styles.inputCont}>
+          <Input
+            onChangeText={newName => setNameProduct(newName)}>{nameProduct}</Input>
+        </View>
       </View>
+
+
+
+      <View style={[{ paddingTop: 30, paddingBottom: 70 }]}>
+        <Text style={{ paddingBottom: 30 }} category='h3' >Quantidade</Text>
+
+        <View style={styles.inputCont}>
+          <Input
+            onChangeText={newQuantity => setQuantityProduct(newQuantity)}>{quantityProduct}</Input>
+        </View>
+      </View>
+
+
+
+
+
+
+
+
 
       <View style={styles.containerBtn}>
-        <Pressable
-          onPress={() => saveProduct()}
-          style={styles.addBtn}>
-          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
-        </Pressable>
+
+
+        <Button
+          size='giant'
+          onPress={() => saveProduct()}>
+          Atualizar
+        </Button>
       </View>
 
-    </View>
+
+
+    </Layout>
   );
 }
 
@@ -108,8 +116,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    justifyContent: 'space-evenly'
 
   },
 

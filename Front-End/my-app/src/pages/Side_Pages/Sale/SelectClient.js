@@ -1,7 +1,9 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, FlatList, View, Pressable, Alert, TextInput } from 'react-native';
+
+import { Button, Icon, Card, Modal, Layout, List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../../../services/api';
 
@@ -33,7 +35,7 @@ function SelectClient({ navigation, route }) {
   const [clientes, setClientes] = useState([]);
 
   useEffect(() => {
-    api.post('client/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+    api.post('client/list', { trader_id: route.params?.trader_id }).then(({ data }) => {
       setClientes(data);
       console.log(data);
     });
@@ -41,18 +43,12 @@ function SelectClient({ navigation, route }) {
 
 
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
       <View style={styles.containerTitle}>
         <Text style={styles.titleText}>Escolha o Cliente</Text>
       </View>
 
       <View style={styles.viewList}>
-
-        <View style={[styles.item, {backgroundColor:'#87CEFA'}]}>
-
-          <Text style={[styles.item_title, styles.row,{fontSize: 20}]}>Nome</Text>
-
-        </View>
 
 
 
@@ -67,16 +63,16 @@ function SelectClient({ navigation, route }) {
       </View>
 
       <View style={styles.containerBtn}>
-        <Pressable
-          onPress={() => navigation.navigate('SelectProduct', { trader_id: route.params.trader_id, client_id : selectedId})}
-          style={styles.addBtn}>
-          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Selecionar</Text>
-        </Pressable>
+        <Button
+          size='giant'
+          onPress={() => navigation.navigate('SelectProduct', { trader_id: route.params.trader_id, client_id: selectedId })}>
+          Selecionar
+        </Button>
+
       </View>
 
 
-
-    </View>
+    </Layout>
   );
 }
 
@@ -84,8 +80,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    justifyContent: 'space-evenly'
 
   },
   containerTitle: {
@@ -144,18 +139,18 @@ const styles = StyleSheet.create({
     color: 'white',
     alignSelf: 'center'
   },
-  addBtn:{
+  addBtn: {
     alignSelf: 'stretch',
-      backgroundColor: '#111',
-      borderTopLeftRadius: 10,
-      borderBottomEndRadius: 10,
-      borderTopRightRadius: 10,
-      borderBottomLeftRadius: 10,
-      marginLeft:20,
-      marginRight:20
+    backgroundColor: '#111',
+    borderTopLeftRadius: 10,
+    borderBottomEndRadius: 10,
+    borderTopRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    marginLeft: 20,
+    marginRight: 20
   },
   containerBtn: {
-    alignSelf:'stretch',
+    alignSelf: 'stretch',
     marginLeft: 100,
     marginRight: 100,
 

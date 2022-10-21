@@ -1,8 +1,9 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, View, Pressable, Alert } from 'react-native';
 
+import { Button, Icon, Card, Modal,Layout ,List, ListItem, Divider, Text } from '@ui-kitten/components';
 import api from '../../services/api';
 
 
@@ -23,27 +24,24 @@ function Historic({ navigation, route }) {
     });
   }, [])
 
-  function date(DATE){
+  function date(DATE) {
     var dateOnly = DATE.split('T03');
     var orderDate = dateOnly[0].split('-');
-    return(orderDate[2] +'/'+ orderDate[1] +'/'+ orderDate[0]);
+    return (orderDate[2] + '/' + orderDate[1] + '/' + orderDate[0]);
   }
 
 
   const Item = ({ item }) => (
-    <View style={[styles.item]}>
 
-      <Text style={[styles.item_title, styles.row]}>{item.name_client}</Text>
-      <Text style={[styles.item_title, styles.row]}>{date(item.date_sale)}</Text>
-      <Text style={[styles.item_title, styles.row]}>R$ {item.total}</Text>
-      
-      <Pressable
-        onPress={() => {  navigation.navigate('HistoricDetal', { trader_id: route.params.trader_id, sale_id : item.id, name_client : item.name_client, date_sale : date(item.date_sale), total: item.total }) }}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Detalhes</Text>
-      </Pressable>
 
-    </View>
+    <ListItem
+      title={item.name_client}
+      key={item.id}
+      onPress={() => {
+        setSelectedSale(item)
+        navigation.navigate('HistoricDetal', { trader_id: route.params.trader_id, sale_id : item.id, name_client : item.name_client, date_sale : date(item.date_sale), total: item.total });
+        }}
+      description={'Venda Realizada em ' + date(item.date_sale) + ' no valor de R$ ' + item.total} />
 
 
   );
@@ -51,6 +49,9 @@ function Historic({ navigation, route }) {
 
 
   const [selectedId, setSelectedId] = useState(null);
+  const [selectedSale, setSelectedSale] = useState(null);
+  const [visible, setVisible] = React.useState(false);
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#00008B" : "#87CEFA";
     const color = item.id === selectedId ? 'white' : 'black';
@@ -58,7 +59,7 @@ function Historic({ navigation, route }) {
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item.id)}
+        
         backgroundColor={{ backgroundColor }}
         textColor={{ color }}
       />
@@ -68,7 +69,7 @@ function Historic({ navigation, route }) {
 
 
   useEffect(() => {
-    api.post('sale/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+    api.post('sale/list', { trader_id: route.params?.trader_id }).then(({ data }) => {
       setClientes(data);
       console.log(data);
     });
@@ -79,34 +80,32 @@ function Historic({ navigation, route }) {
 
 
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Histórico de Vendas</Text>
+      <Text category='h2' style={[{ alignSelf: 'center', padding: 20 }]} >Histórico de Vendas</Text>
       </View>
 
       <View style={styles.viewList}>
 
-        <View style={[styles.item]}>
-
-          <Text style={[styles.item_title, styles.row]}>Nome</Text>
-          <Text style={[styles.item_title, styles.row]}>Data</Text>
-          <Text style={[styles.item_title, styles.row]}>Valor Total</Text>
-          <Text style={[styles.item_title, styles.row]}></Text>
-
-        </View>
+        
 
 
-
-
-        <FlatList
+        <List
+          style={{ height: 300 }}
           data={clientes.sale}
-          renderItem={renderItem}
+          ItemSeparatorComponent={Divider}
           keyExtractor={(item) => item.id}
+          renderItem={renderItem}
           extraData={selectedId}
         />
 
+
+
+
+
+
       </View>
-    </View>
+    </Layout>
   );
 }
 
@@ -117,8 +116,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    justifyContent: 'space-evenly'
 
   },
   containerTitle: {

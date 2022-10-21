@@ -29,7 +29,7 @@ const listAllProducts = (req, res) => {
     });
 };
 
-//Get by Id
+//Get by Ids
 const getProductById = (req, res) => {
     
     const errors = validationResult(req);

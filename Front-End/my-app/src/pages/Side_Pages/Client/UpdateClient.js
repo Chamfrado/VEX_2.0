@@ -1,7 +1,9 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, View, Pressable, Alert, TextInput } from 'react-native';
+
+import { Button, Icon, Card, Input, Layout, Modal, List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../../../services/api';
 
@@ -9,28 +11,29 @@ import api from '../../../../services/api';
 function UpdateClient({ navigation, route }) {
 
   function saveClient() {
-    console.log(route.params?.product_id + '=======' + route.params?.trader_id );
-  api.put('client/update', {
-    id: route.params?.client_id,
-    name_client: nameClient,
-    phone_client: phoneClient,
-    trader_id: route.params?.trader_id
-  }).then(({ data }) => {
-    Alert.alert('Cliente Atualizado com sucesso!')
-  });
-}
+    console.log(route.params?.product_id + '=======' + route.params?.trader_id);
+    api.put('client/update', {
+      id: route.params?.client_id,
+      name_client: nameClient,
+      phone_client: phoneClient,
+      trader_id: route.params?.trader_id
+    }).then(({ data }) => {
+      Alert.alert('Cliente Atualizado com sucesso!')
+      navigation.navigate('Client', { trader_id: route.params.trader_id })
+    });
+  }
 
 
 
 
 
-  
+
 
   //name_product, price_product, quantity_product, description_product, trader_id
   const [nameClient, setNameClient] = useState('');
   const [phoneClient, setPhoneClient] = useState('');
 
-  
+
 
   useEffect(() => {
     console.log(route.params?.client_id);
@@ -50,38 +53,77 @@ function UpdateClient({ navigation, route }) {
 
 
   return (
-    <View style={styles.container}>
+
+    <Layout style={styles.container}>
+
+
 
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Atualizar Cliente</Text>
+        <Text style={styles.titleText} category='h1'>Adicionar Cliente</Text>
       </View>
 
-      <View style={styles.containerInput}>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Nome:</Text>
-          <TextInput style={styles.textinput}
-            onChangeText={newnameClient => setNameClient(newnameClient)}
-            placeholder='Nome do Cliente'>{nameClient}</TextInput> 
-        </View>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Telefone:</Text>
-          <TextInput style={styles.textinput}
-            placeholder='(XX) X XXXX-XXXX'
-            onChangeText={newpriceProduct => setPhoneClient(newpriceProduct)} >{phoneClient}</TextInput>
-        </View>
-        
+      <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>
+        <Text style={{ paddingBottom: 30 }} category='h3' >Nome do Cliente</Text>
 
+        <View style={styles.inputCont}>
+          <Input
+            onChangeText={newnameClient => setNameClient(newnameClient)}>{nameClient}</Input>
+        </View>
       </View>
+
+
+
+      <View style={[{ paddingTop: 30, paddingBottom: 70 }]}>
+        <Text style={{ paddingBottom: 30 }} category='h3' >Telefone do Cliente</Text>
+
+        <View style={styles.inputCont}>
+          <Input
+            onChangeText={newphoneClient => setPhoneClient(newphoneClient)}>{phoneClient}</Input>
+        </View>
+      </View>
+
+
+
+
+
+
+
+
 
       <View style={styles.containerBtn}>
-        <Pressable
-          onPress={() => saveClient()}
-          style={styles.addBtn}>
-          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
-        </Pressable>
+
+
+        <Button
+          size='giant'
+          onPress={() => saveClient()}>
+          Atualizar
+        </Button>
       </View>
 
-    </View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </Layout>
   );
 }
 
@@ -89,8 +131,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    justifyContent: 'space-evenly'
 
   },
 

@@ -17,8 +17,7 @@ const initDatabase = (req, res) => {
 
 //List All Sale
 const listAllSales = (req, res) => {
-    const sqlQuery = 'SELECT S.id,C.name_client, S.date_sale, SUM(PHS.quantity_sale_product * PHS.price_product_sale) AS total FROM sale S INNER JOIN client C ON C.id = S.client_id INNER JOIN product_has_sale PHS ON S.id = PHS.sale_id WHERE s.trader_id = '+ req.body.trader_id + ' GROUP BY S.id ORDER BY S.id desc';
-
+    const sqlQuery = 'SELECT S.id,C.name_client, S.date_sale, SUM(PHS.quantity_sale_product * PHS.price_product_sale) AS total FROM sale S INNER JOIN client C ON C.id = S.client_id INNER JOIN product_has_sale PHS ON S.id = PHS.sale_id WHERE S.trader_id = '+ req.body.trader_id + ' GROUP BY S.id ORDER BY S.id desc';
     console.log(`sqlQuery: ${sqlQuery}`);
 
     database.query(sqlQuery, (err, result) => {

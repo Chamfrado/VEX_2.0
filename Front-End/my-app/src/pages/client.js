@@ -1,10 +1,18 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, FlatList, View, Pressable, Alert, ScrollView } from 'react-native';
+
+import { Button, Icon, Card,Layout, Modal, List, ListItem, Divider, Text } from '@ui-kitten/components';
+
 
 import api from '../../services/api'
 
+
+
+const ClientIcon = (props) => (
+  <Icon {...props} name='person-outline'/>
+);
 
 
 
@@ -21,7 +29,8 @@ function Client({ navigation, route }) {
         id: ID
       }
     }).then(({ data }) => {
-      Alert.alert('Cliente Deletado com sucesso!')
+      setVisible(false);
+      navigation.navigate('UpdateAfterDelete', { trader_id: route.params.trader_id });
       console.log(data);
     });
   }
@@ -30,42 +39,23 @@ function Client({ navigation, route }) {
 
 
 
-
   const Item = ({ item }) => (
-    <View style={[styles.item]}>
-
-      <Text style={[styles.item_title, styles.row]}>{item.name_client}</Text>
-      <Text style={[styles.item_title, styles.row]}>{item.phone_client}</Text>
-      <Pressable
-        onPress={() => navigation.navigate('UpdateClient', { trader_id: route.params.trader_id, client_id: item.id })}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Alterar</Text>
-      </Pressable>
-      <Pressable
-        onPress={() => {
-          Alert.alert(
-            "Excluir Cliente",
-            "Deseja excluir o client?",
-            [
-              {
-                text: "Cancelar",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "Cancelar"
-              },
-              { text: "Sim", onPress: () => deleteClient(item.id) }
-            ]
-          );
-        }}
-        style={styles.btn}>
-        <Text style={styles.btnText}>Excluir</Text>
-      </Pressable>
-
-    </View>
-
+    <ListItem
+      title={item.name_client}
+      key={item.id}
+      onPress={() => {
+        setSelectClient(item);
+        setVisible(true);
+      }}
+      description={'Telefone: ' + item.phone_client}
+      accessoryLeft={ClientIcon} />
 
   );
-
+  const [visible, setVisible] = React.useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [selectClient, setSelectClient] = useState(null);
+
+
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#00008B" : "#87CEFA";
     const color = item.id === selectedId ? 'white' : 'black';
@@ -84,7 +74,7 @@ function Client({ navigation, route }) {
   useEffect(() => {
 
     const subs = navigation.addListener('focus', () => {
-      api.post('client/list',{trader_id: route.params?.trader_id}).then(({ data }) => {
+      api.post('client/list', { trader_id: route.params?.trader_id }).then(({ data }) => {
         setClientes(data);
         console.log(data);
       });
@@ -117,46 +107,75 @@ function Client({ navigation, route }) {
 
 
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
 
-      <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Clientes</Text>
-      </View>
-
-
-      <View style={styles.viewList}>
-
-        <View style={[styles.item]}>
-
-          <Text style={[styles.item_title, styles.row]}>Nome</Text>
-          <Text style={[styles.item_title, styles.row]}>Telefone</Text>
-          <Text style={[styles.item_title, styles.row]}>Alterar</Text>
-          <Text style={[styles.item_title, styles.row]}>Excluir</Text>
-
-        </View>
-
-
-
-
-        <FlatList
-          data={clientes.clients}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        />
-
+      <View style={[styles.containerTitle, { alignItems: 'center', paddingBottom: 30, paddingTop: 10 }]}>
+        <Text style={styles.titleText} category='h1' >Clientes</Text>
       </View>
 
 
       <View style={styles.containerBtn}>
-        <Pressable
-          onPress={() => navigation.navigate('AddClient', { trader_id: route.params.trader_id })}
-          style={styles.addBtn}>
-          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
-        </Pressable>
+        <Button
+        size='large'
+        onPress={() => navigation.navigate('AddClient', { trader_id: route.params.trader_id })}
+        >
+          Adicionar Cliente
+        </Button>
+        
       </View>
 
-    </View>
+      <Text category='h2' style={[{alignSelf: 'center', padding: 20}]} >Lista de Clientes</Text>
+
+      <List
+        style={{height: 300}}
+        data={clientes.clients}
+        ItemSeparatorComponent={Divider}
+        renderItem={renderItem}
+        extraData={selectedId}
+      />
+
+      <Modal visible={visible}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisible(false)}>
+        <Card disabled={true}>
+          <Text category='h3' style={{ alignSelf: 'center' }}>Opções</Text>
+
+          <View style={[{flexDirection:'row', padding: 30}]}>
+            <Button size='large'  onPress={() => {
+              setVisible(false)
+              navigation.navigate('UpdateClient', { trader_id: route.params.trader_id, client_id: selectClient.id})}} >Alterar</Button>
+            <Text>                      </Text>
+            <Button size='large'
+              onPress={() => {
+                Alert.alert(
+                  "Excluir Cliente",
+                  "Deseja excluir o client?",
+                  [
+                    {
+                      text: "Cancelar",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "Cancelar"
+                    },
+                    { text: "Sim", onPress: () => {
+                      setVisible(false);
+                      deleteClient(selectClient.id);
+                    } }
+                  ]
+                );
+              }}>Deletar</Button>
+
+          </View>
+          <Button onPress={() => setVisible(false)}>
+            Cacelar
+          </Button>
+        </Card>
+
+      </Modal>
+
+
+      
+
+    </Layout>
   );
 }
 
@@ -164,9 +183,6 @@ function Client({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
 
   },
   containerTitle: {
@@ -238,7 +254,10 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginLeft: 100,
     marginRight: 100,
+    paddingBottom: 30
 
+  }, backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   }
 });
 

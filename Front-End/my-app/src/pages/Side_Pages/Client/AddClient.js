@@ -1,7 +1,9 @@
 import { TabRouter } from '@react-navigation/native';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, TouchableOpacity, FlatList, Button, Text, View, Pressable, Modal, Alert, TextInput } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, View, Pressable, Alert, TextInput } from 'react-native';
+
+import { Button, Icon, Card, Input, Layout, Modal, List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../../../services/api';
 
@@ -12,7 +14,7 @@ function AddClient({ navigation, route }) {
 
   function adicionarClient() {
     console.log(nameClient + '---------' + traderID);
-    
+
     api.post('client/add',
       {
         name_client: nameClient,
@@ -20,50 +22,66 @@ function AddClient({ navigation, route }) {
         trader_id: route.params?.trader_id,
       }).then(({ data }) => {
         Alert.alert('Cliente adicionado com sucesso!');
+        navigation.navigate('Client', { trader_id: route.params.trader_id })
 
       })
   }
 
-  
+
 
   //name_product, price_product, quantity_product, description_product, trader_id
   const [nameClient, setNameClient] = useState('');
   const [phoneClient, setPhoneClient] = useState('');
 
-  
+
   return (
-    <View style={styles.container}>
+    <Layout style={styles.container}>
 
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText}>Adicionar Cliente</Text>
+        <Text style={styles.titleText} category='h1'>Adicionar Cliente</Text>
       </View>
 
-      <View style={styles.containerInput}>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Nome:</Text>
-          <TextInput style={styles.textinput}
-            onChangeText={newnameClient => setNameClient(newnameClient)}
-            placeholder='Nome do Cliente' />
+      <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>
+        <Text style={{ paddingBottom: 30}} category='h3' >Nome do Cliente</Text>
+
+        <View style={styles.inputCont}>
+          <Input
+            placeholder='Insira aqui o nome'
+            onChangeText={newnameClient => setNameClient(newnameClient)} />
         </View>
-        <View style={styles.product_textb}>
-          <Text style={styles.textmodal}>Telefone</Text>
-          <TextInput style={styles.textinput}
-            placeholder='(XX) X XXXX-XXXX'
+      </View>
+
+
+
+      <View style={[{ paddingTop: 30, paddingBottom: 70 }]}>
+        <Text style={{ paddingBottom: 30}} category='h3' >Telefone do Cliente</Text>
+
+        <View style={styles.inputCont}>
+          <Input
+            placeholder='Insira aqui o nome'
             onChangeText={newphoneClient => setPhoneClient(newphoneClient)} />
         </View>
-        
-
       </View>
+
+
+
+
+
+
+
+
 
       <View style={styles.containerBtn}>
-        <Pressable
-          onPress={() => adicionarClient()}
-          style={styles.addBtn}>
-          <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center' }}>Adicionar</Text>
-        </Pressable>
+        
+
+        <Button
+        size='giant'
+        onPress={() => adicionarClient() }>
+        Adicionar
+      </Button>
       </View>
 
-    </View>
+    </Layout>
   );
 }
 
@@ -71,8 +89,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#87CEFA'
+    justifyContent: 'space-evenly'
 
   },
 
@@ -88,12 +105,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch'
 
   },
-  product_textb: {
-    flexDirection: 'row',
-    alignSelf: "flex-start",
-    margin: 5,
-    flexWrap: 'wrap'
-  },
   containerInput: {
     flex: 1,
     paddingTop: 50,
@@ -102,7 +113,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginLeft: 100,
     marginRight: 100,
-    flex: 1
+    flex: 1,
+    paddingTop: 30
 
   },
   containerTitle: {
