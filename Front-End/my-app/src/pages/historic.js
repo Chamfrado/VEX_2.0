@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, Pressable, Alert } from 'react-native';
 
-import { Button, Icon, Card, Modal,Layout ,List, ListItem, Divider, Text } from '@ui-kitten/components';
+import { Button, Icon, Card, Modal,Layout,Spinner ,List, ListItem, Divider, Text } from '@ui-kitten/components';
 import api from '../../services/api';
 
 
@@ -71,11 +71,12 @@ function Historic({ navigation, route }) {
   useEffect(() => {
     api.post('sale/list', { trader_id: route.params?.trader_id }).then(({ data }) => {
       setClientes(data);
+      setVisibleSpin(false);
       console.log(data);
     });
   }, [])
 
-
+  const [visibleSpin, setVisibleSpin] = React.useState(true);
 
 
 
@@ -88,7 +89,11 @@ function Historic({ navigation, route }) {
       <View style={styles.viewList}>
 
         
-
+      <Modal visible={visibleSpin}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisibleSpin(false)}>
+        <Spinner />
+      </Modal>
 
         <List
           style={{ height: 300 }}

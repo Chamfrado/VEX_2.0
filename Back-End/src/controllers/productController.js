@@ -21,7 +21,7 @@ const listAllProducts = (req, res) => {
     const sqlQuery = 'SELECT * FROM product WHERE trader_id = '+req.body.trader_id+ ' ORDER BY name_product asc';
 
     console.log(`sqlQuery: ${sqlQuery}`);
-
+    
     database.query(sqlQuery, (err, result) => {
         if (err) throw err;
 

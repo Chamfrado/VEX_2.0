@@ -3,7 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, Pressable, Alert } from 'react-native';
 
-import { Button, Icon, Card, Modal,Layout ,List, ListItem, Divider, Text } from '@ui-kitten/components';
+import { Button, Icon, Card, Modal, Spinner, Layout, List, ListItem, Divider, Text } from '@ui-kitten/components';
 
 import api from '../../services/api'
 
@@ -61,10 +61,15 @@ function Product({ navigation, route }) {
 
   useEffect(() => {
     const subs = navigation.addListener('focus', () => {
+      setVisibleSpin(true)
+
       api.post('product/list', { trader_id: route.params?.trader_id }).then(({ data }) => {
+        setVisibleSpin(false)
         setProd(data);
         console.log(data);
       });
+
+
     })
   }, [refreshKey])
 
@@ -95,8 +100,8 @@ function Product({ navigation, route }) {
   };
 
   const [selectedProduct, setSelectedProduct] = useState('');
+  const [visibleSpin, setVisibleSpin] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
-
 
 
 
@@ -138,7 +143,7 @@ function Product({ navigation, route }) {
 
 
 
-      <Text category='h2' style={[{alignSelf: 'center', padding: 20}]} >Lista de Produtos</Text>
+      <Text category='h2' style={[{ alignSelf: 'center', padding: 20 }]} >Lista de Produtos</Text>
 
 
       <List
@@ -150,7 +155,11 @@ function Product({ navigation, route }) {
         extraData={refreshKey}
       />
 
-
+      <Modal visible={visibleSpin}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisibleSpin(false)}>
+        <Spinner />
+      </Modal>
 
       <Modal visible={visible}
         backdropStyle={styles.backdrop}
