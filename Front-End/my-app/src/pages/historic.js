@@ -22,6 +22,11 @@ function Historic({ navigation, route }) {
       setSaleList(data);
       console.log(saleList);
     });
+
+
+   
+
+
   }, [])
 
   function date(DATE) {
@@ -103,11 +108,6 @@ function Historic({ navigation, route }) {
           renderItem={renderItem}
           extraData={selectedId}
         />
-
-
-
-
-
 
       </View>
     </Layout>

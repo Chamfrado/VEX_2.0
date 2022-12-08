@@ -18,8 +18,6 @@ function AddProduct({ navigation, route }) {
       {
         name_product: nameProduct,
         price_product: priceProduct,
-        quantity_product: quantityProduct,
-        description_product: descriptionProduct,
         trader_id: route.params?.trader_id,
       }).then(({ data }) => {
         navigation.goBack();
@@ -32,8 +30,6 @@ function AddProduct({ navigation, route }) {
   //name_product, price_product, quantity_product, description_product, trader_id
   const [nameProduct, setNameProduct] = useState('');
   const [priceProduct, setPriceProduct] = useState('15');
-  const [quantityProduct, setQuantityProduct] = useState('');
-  const [descriptionProduct, setDescriptionProduct] = useState('a');
 
 
 
@@ -42,7 +38,7 @@ function AddProduct({ navigation, route }) {
     <Layout style={styles.container}>
 
     <View style={styles.containerTitle}>
-      <Text style={styles.titleText} category='h1'>Adicionar Cliente</Text>
+      <Text style={styles.titleText} category='h1'>Adicionar Produto</Text>
     </View>
 
     <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>
@@ -58,17 +54,15 @@ function AddProduct({ navigation, route }) {
 
 
     <View style={[{ paddingTop: 30, paddingBottom: 70 }]}>
-      <Text style={{ paddingBottom: 30}} category='h3' >Quantidade</Text>
+      <Text style={{ paddingBottom: 30}} category='h3' >Preço</Text>
 
-      <View style={styles.inputCont}>
+      <View style={[styles.inputCont, {flexDirection: 'row', alignItems:'center'}]}>
+        <Text>R$ </Text>
         <Input
-          placeholder='insira a Quantidade'
-          onChangeText={newQuantityProduct => setQuantityProduct(newQuantityProduct)} />
+          placeholder='insira o Preço'
+          onChangeText={newPriceProduct => setPriceProduct(newPriceProduct)} />
       </View>
     </View>
-
-
-
 
 
 

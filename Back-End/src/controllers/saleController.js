@@ -5,7 +5,7 @@ const Sale = require('../models/sale')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery = 'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, date_sale DATE, status_sale VARCHAR(50), trader_id INTEGER, client_id INTEGER, purchase_in_installments VARCHAR(50), payment_control VARCHAR(50), total_sale FLOAT ,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id), FOREIGN KEY (client_id) REFERENCES client(id))';
+    const sqlQuery = 'CREATE TABLE IF NOT EXISTS sale(id int AUTO_INCREMENT, date_sale DATE, trader_id INTEGER, client_id INTEGER,total_sale FLOAT ,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id), FOREIGN KEY (client_id) REFERENCES client(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -60,11 +60,8 @@ const addSale = (req, res) => {
     } else {
         const Sale = {
             date_sale: req.body.date_sale,
-            status_sale: req.body.status_sale,
             trader_id: req.body.trader_id,
             client_id: req.body.client_id,
-            purchase_in_installments: req.body.purchase_in_installments,
-            payment_control: req.body.payment_control,
             total_sale: req.total_sale
 
         };
@@ -114,9 +111,6 @@ const updateSale = (req, res) => {
         const Sale = {
 
             date_sale: req.body.date_sale,
-            status_sale: req.body.status_sale,
-            purchase_in_installments: req.body.purchase_in_installments,
-            payment_control: req.body.payment_control,
             total_sale: req.body.total_sale
         };
 

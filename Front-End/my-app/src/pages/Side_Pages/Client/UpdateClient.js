@@ -59,7 +59,7 @@ function UpdateClient({ navigation, route }) {
 
 
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText} category='h1'>Adicionar Cliente</Text>
+        <Text style={styles.titleText} category='h1'>Atualizar Cliente</Text>
       </View>
 
       <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>

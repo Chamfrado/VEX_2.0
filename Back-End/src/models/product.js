@@ -3,16 +3,12 @@ class product {
     id;
     name_product;
     price_product;
-    quantity_product;
-    description_product;
     trader_id;
 
-    constructor(id, name_product, price_product, quantity_product, description_product, trader_id) {
+    constructor(id, name_product, price_product, trader_id) {
         this.id = id;
         this.name_product = name_product;
         this.price_product = price_product;
-        this.quantity_product = quantity_product;
-        this.description_product = description_product;
         this.trader_id = trader_id;
 
     }

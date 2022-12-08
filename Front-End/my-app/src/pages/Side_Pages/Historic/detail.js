@@ -69,13 +69,13 @@ function HistoricDetail({ navigation, route }) {
 
             <View style={styles.saleInfo}>
                 <View style={styles.product_textb}>
-                    <Text style={[styles.textmodal]} category='h3'>Cliente: {clientName}</Text>
+                    <Text style={[styles.textmodal,{fontSize: 25}]} category='p1'>Cliente: {clientName}</Text>
                 </View>
                 <View style={styles.product_textb}>
-                    <Text style={[styles.textmodal]} category='h3'>Data da Venda: {date}</Text>
+                    <Text style={[styles.textmodal,{fontSize: 25}]} category='p1'>Data da Venda: {date}</Text>
                 </View>
                 <View style={styles.product_textb}>
-                    <Text style={[styles.textmodal]} category='h3' >Total da Venda: R$ {total}</Text>
+                    <Text style={[styles.textmodal,{fontSize: 25}]} category='p1' >Total da Venda: R$ {total}</Text>
                 </View>
             </View>
 

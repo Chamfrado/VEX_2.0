@@ -55,6 +55,7 @@ function SelectProduct({ navigation, route }) {
 
 
     function addProductList(item) {
+
         if (productList.length === 0) {
             item.price_product = priceProduct;
             item.quantity_product = quantityProduct;
@@ -166,7 +167,7 @@ function SelectProduct({ navigation, route }) {
                     <View style={[{ alignContent: 'center' }]}>
 
                         <View style={styles.containerTitle}>
-                            <Text style={{ alignSelf: 'center', padding: 20 }} category='h1'>Adicionar Cliente</Text>
+                            <Text style={{ alignSelf: 'center', padding: 20 }} category='h1'>Dados do Produto</Text>
                         </View>
 
                         <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>

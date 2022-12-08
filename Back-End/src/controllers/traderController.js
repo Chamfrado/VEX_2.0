@@ -5,7 +5,7 @@ const Trader = require('../models/trader')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS trader(id int AUTO_INCREMENT, name_trader VARCHAR(50), phone_trader VARCHAR(50), email_trader VARCHAR(50),pass_trader VARCHAR(50), date_acess DATE, date_term DATE,PRIMARY KEY(id),UNIQUE KEY (phone_trader))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS trader(id int AUTO_INCREMENT, name_trader VARCHAR(50), phone_trader VARCHAR(50),pass_trader VARCHAR(50),PRIMARY KEY(id),UNIQUE KEY (phone_trader))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -62,10 +62,7 @@ const addTrader = (req, res) => {
         const Trader = {
             name_trader: req.body.name_trader,
             phone_trader: req.body.phone_trader,
-            email_trader: req.body.email_trader,
-            pass_trader: req.body.pass_trader,
-            date_acess: req.body.date_acess,
-            date_term: req.body.date_term
+            pass_trader: req.body.pass_trader
 
         };
 
@@ -111,10 +108,7 @@ const updateTrader = (req, res) => {
         const Trader = {
             name_trader: req.body.name_trader,
             phone_trader: req.body.phone_trader,
-            email_trader: req.body.email_trader,
             pass_trader: req.body.pass_trader,
-            date_acess: req.body.date_acess,
-            date_term: req.body.date_term,
         };
 
         console.log(`sqlQuery: ${sqlQuery}`);

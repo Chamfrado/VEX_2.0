@@ -65,7 +65,7 @@ function UpdateProduct({ navigation, route }) {
 
 
       <View style={styles.containerTitle}>
-        <Text style={styles.titleText} category='h1'>Adicionar Cliente</Text>
+        <Text style={styles.titleText} category='h1'>Atualizar Produto</Text>
       </View>
 
       <View style={[{ paddingTop: 30, paddingBottom: 30 }]}>

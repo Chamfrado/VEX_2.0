@@ -60,8 +60,6 @@ routes.post('/product/getById',body('id').not().escape() ,productController.getP
 routes.post('/product/add',
     body('name_product').not().isEmpty().escape(),
     body('price_product').not().isEmpty().escape(),
-    body('quantity_product').not().isEmpty().escape(),
-    body('description_product').not().isEmpty().escape(),
     body('trader_id').not().isEmpty().escape(),
     productController.addProduct
     );
@@ -69,8 +67,6 @@ routes.post('/product/add',
 routes.put('/product/update',
     body('name_product').not().isEmpty().escape(),
     body('price_product').not().isEmpty().escape(),
-    body('quantity_product').not().isEmpty().escape(),
-    body('description_product').not().isEmpty().escape(),
     body('trader_id').not().isEmpty().escape(),
     body('id').not().isEmpty().escape(),
     productController.updateProduct);
@@ -90,22 +86,16 @@ routes.get('/sale/getById',body('id').not().escape() ,saleController.getSaleById
 
 routes.post('/sale/add',
     body('date_sale').not().isEmpty().escape(),
-    body('status_sale').not().isEmpty().escape(),
     body('trader_id').not().isEmpty().escape(),
     body('client_id').not().isEmpty().escape(),
-    body('purchase_in_installments').not().isEmpty().escape(),
-    body('payment_control').not().isEmpty().escape(),
     body('total_sale').not().isEmpty().escape(),
     saleController.addSale
     );
 
 routes.put('/sale/update',
     body('date_sale').not().isEmpty().escape(),
-    body('status_sale').not().isEmpty().escape(),
     body('trader_id').not().isEmpty().escape(),
     body('client_id').not().isEmpty().escape(),
-    body('purchase_in_installments').not().isEmpty().escape(),
-    body('payment_control').not().isEmpty().escape(),
     body('total_sale').not().isEmpty().escape(),
     body('id').not().isEmpty().escape(),
     saleController.updateSale);
@@ -124,20 +114,14 @@ routes.post('/trader/getById',body('id').not().escape() ,traderController.getTra
 routes.post('/trader/add',
     body('name_trader').not().isEmpty().escape(),
     body('phone_trader').not().isEmpty().escape(),
-    body('email_trader').not().isEmpty().escape(),
     body('pass_trader').not().isEmpty().escape(),
-    body('date_acess').not().isEmpty().escape(),
-    body('date_term').not().isEmpty().escape(),
     traderController.addTrader
     );
 
 routes.put('/trader/update',
     body('name_trader').not().isEmpty().escape(),
     body('phone_trader').not().isEmpty().escape(),
-    body('email_trader').isEmail().normalizeEmail(),
     body('pass_trader').not().isEmpty().escape(),
-    body('date_acess').not().isEmpty().escape(),
-    body('date_term').not().isEmpty().escape(),
     body('id').not().isEmpty().escape(),
     traderController.updateTrader);
 

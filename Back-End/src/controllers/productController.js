@@ -6,7 +6,7 @@ const Product = require('../models/product')
 
 
 const initDatabase = (req, res) => {
-    const sqlQuery =  'CREATE TABLE IF NOT EXISTS product(id int AUTO_INCREMENT, name_product VARCHAR(50), price_product FLOAT, quantity_product INTEGER,description_product VARCHAR(50) ,trader_id INTEGER,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id))';
+    const sqlQuery =  'CREATE TABLE IF NOT EXISTS product(id int AUTO_INCREMENT, name_product VARCHAR(50), price_product FLOAT,trader_id INTEGER,PRIMARY KEY(id), FOREIGN KEY (trader_id) REFERENCES trader(id))';
 
     database.query(sqlQuery, (err) => {
         if (err) throw err;
@@ -63,14 +63,14 @@ const addProduct = (req, res) => {
         const Product = {
             name_product: req.body.name_product,
             price_product: req.body.price_product,
-            quantity_product: req.body.quantity_product,
-            description_product: req.body.description_product,
             trader_id: req.body.trader_id
 
         };
 
         const sqlQuery = 'INSERT INTO product SET ?';
+
         console.log(`sqlQuery: ${sqlQuery}`);
+        console.log("TESTE");
 
         database.query(sqlQuery, Product, (err, row) => {
             if (err) throw err;
@@ -115,8 +115,6 @@ const updateProduct = (req, res) => {
             
             name_product: req.body.name_product,
             price_product: req.body.price_product,
-            quantity_product: req.body.quantity_product,
-            description_product: req.body.description_product,
             trader_id: req.body.trader_id
         };
 

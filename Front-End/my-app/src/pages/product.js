@@ -45,7 +45,7 @@ function Product({ navigation, route }) {
         setSelectProduct(item);
         setVisible(true);
       }}
-      description={'Quantidade: ' + item.quantity_product}
+      description={'Preço de Compra: R$ ' + item.price_product}
       accessoryLeft={ProductIcon} />
 
   );
@@ -56,8 +56,6 @@ function Product({ navigation, route }) {
 
   //Substituir por Screen
   const [produtos, setProd] = useState([]);
-
-  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     const subs = navigation.addListener('focus', () => {
@@ -71,13 +69,9 @@ function Product({ navigation, route }) {
 
 
     })
-  }, [refreshKey])
+  }, [])
 
 
-  useEffect(() => {
-
-
-  }, [refreshKey])
 
   //VOLTAR LAYOUT ANTIGO!
 
@@ -102,22 +96,6 @@ function Product({ navigation, route }) {
   const [selectedProduct, setSelectedProduct] = useState('');
   const [visibleSpin, setVisibleSpin] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
-
-
-
-  function salvarProduto() {
-    api.put('product/update', {
-      id: selectedId,
-      name_product: nameProduct,
-      price_product: priceProduct,
-      quantity_product: quantityProduct,
-      description_product: descriptionProduct,
-      trader_id: route.params?.trader_id
-    }).then(({ data }) => {
-      Alert.alert('Produto Atualizado com sucesso!')
-    });
-  }
-
 
 
 
@@ -152,7 +130,6 @@ function Product({ navigation, route }) {
         ItemSeparatorComponent={Divider}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
-        extraData={refreshKey}
       />
 
       <Modal visible={visibleSpin}
@@ -176,8 +153,8 @@ function Product({ navigation, route }) {
             <Button size='large'
               onPress={() => {
                 Alert.alert(
-                  "Excluir Cliente",
-                  "Deseja excluir o client?",
+                  "Excluir Produto",
+                  "Deseja excluir o Produto?",
                   [
                     {
                       text: "Cancelar",

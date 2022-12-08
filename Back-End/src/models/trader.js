@@ -5,17 +5,12 @@ class trader {
     phone_trader;
     email_trader;
     pass_trader;
-    date_acess;
-    date_term;
 
-    constructor(id, name_trader, phone_trader, email_trader, pass_trader, date_acess, date_term ) {
+    constructor(id, name_trader, phone_trader, pass_trader) {
         this.id = id;
         this.name_trader = name_trader;
         this.phone_trader = phone_trader;
-        this.email_trader = email_trader;
         this.pass_trader = pass_trader;
-        this.date_acess = date_acess;
-        this.date_term = date_term;
     }
 }
 
