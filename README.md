@@ -21,7 +21,7 @@ The backend of the SAC Fullnet project is based on Spring Boot, and its `pom.xml
 #### Backend Dependencies
 
 - `express`: Web framework for Node.js.
-- ``express-validator `: Middleware for request data validation.
+- `express-validator `: Middleware for request data validation.
 - `mysql`: Node.js MySQL driver for database connectivity.
 - `dotenv`:  Library for managing environment variables.
 - `nodemon`: Utility to monitor for changes and restart the server.
